@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Header.css";
-import webLogo from "../../assets/images/webLogo.png";
-import profile from "../../assets/images/profile.png";
+import {profile, webLogo} from "../../assets/images";
 
 function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

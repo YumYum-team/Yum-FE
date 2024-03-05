@@ -1,16 +1,15 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Header from "./components/Header";
-import LoginPage from "./pages/login/LoginPage";
-import LoginAdd from "./pages/login/LoginAdd";
-import Chatpage from "./pages/chatting/ChatPage";
-import MapPage from "./pages/mainpage/MapPage";
-import MyPage from "./pages/mypage/MyPage";
-
+import HeaderLayout from "./pages/HeaderLayout";
+import MapPage from "./pages/Mainpage/MapPage";
+import Chatpage from "./pages/Chatting/ChatPage";
+import MyPage from "./pages/Mypage/MyPage";
+import LoginPage from "./components/Login/LoginPage";
+import LoginAdd from "./components/Login/LoginAdd";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Header />,
+    element: <HeaderLayout />,
     children: [
       { index: true, element: <MapPage /> },
 
