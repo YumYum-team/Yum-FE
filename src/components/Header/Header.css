@@ -1,0 +1,25 @@
+.Header {
+  width: 100%;
+  height: 6rem;
+  display: flex;
+  justify-content: space-between;
+  background-color: #fff0aa;
+}
+
+.weblog img {
+  width: 15rem;
+  margin: 10px;
+}
+
+.profile img {
+  width: 4rem;
+  margin: 0.75rem;
+  background-color: #fff0aa;
+}
+
+button.profile-link {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  margin-right: 5px;
+}
