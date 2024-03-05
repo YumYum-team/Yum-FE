@@ -19,12 +19,15 @@
 .email {
   margin: 20px 0px 20px 0px;
   font-size: 20px;
+  color: gray;
 }
 
 .info-edit {
   font-size: 17px;
   border: solid 1px gray;
   background-color: white;
+  color: gray;
+  padding: 5px 30px 5px 30px;
 }
 
 .right-section {
@@ -62,4 +65,5 @@
 .myPage-button2 button svg {
   margin-right: 20px; /* 아이콘 오른쪽에 5px의 간격 추가 */
   color: gray;
+  font-size: 30px;
 }

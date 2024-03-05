@@ -22,6 +22,18 @@ const MyPage = () => {
     navigate("/Chat");
   };
 
+  const favoriteButtonHandler = () => {
+    navigate("/favorite");
+  };
+
+  const calendarButtonHandler = () => {
+    navigate("/calendar");
+  };
+
+  const logoutButtonHandler = () => {
+    navigate("/");
+  };
+
   return (
     <div className="myPage-box">
       <div className="left-section">
@@ -44,11 +56,11 @@ const MyPage = () => {
             <ChatRightTextFill />
             채팅
           </button>
-          <button className="favorites">
+          <button className="favorites" onClick={favoriteButtonHandler}>
             <StarFill />
             저장한장소
           </button>
-          <button className="calendar">
+          <button className="calendar" onClick={calendarButtonHandler}>
             <Calendar />
             달력
           </button>
@@ -56,7 +68,7 @@ const MyPage = () => {
       </div>
       <div className="right-section2">
         <div className="myPage-button2">
-          <button className="logout">
+          <button className="logout" onClick={logoutButtonHandler}>
             <BoxArrowRight />
             로그아웃
           </button>
