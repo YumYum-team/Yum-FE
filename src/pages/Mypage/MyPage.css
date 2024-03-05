@@ -1,0 +1,65 @@
+.myPage-box {
+  display: flex;
+  flex-direction: row;
+  padding-top: 5rem;
+  justify-content: center;
+}
+
+.left-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 80px 50px 50px 50px;
+}
+
+.profile-photo img {
+  width: 220px;
+}
+
+.email {
+  margin: 20px 0px 20px 0px;
+  font-size: 20px;
+}
+
+.info-edit {
+  font-size: 17px;
+  border: solid 1px gray;
+  background-color: white;
+}
+
+.right-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 250px;
+  margin: 80px 0px 0px 50px;
+}
+
+.right-section2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 250px;
+  margin-top: 80px;
+}
+
+.myPage-button {
+  display: flex;
+  flex-wrap: wrap; /* 버튼들을 여러 줄로 나누기 위해 flex-wrap 속성 추가 */
+}
+
+.myPage-button1 button,
+.myPage-button2 button {
+  display: flex;
+  align-items: center;
+  margin: 40px 20px 60px 60px; /* 버튼들 간의 간격 조절 */
+  border: none;
+  background-color: white;
+  font-size: 20px;
+}
+
+.myPage-button1 button svg,
+.myPage-button2 button svg {
+  margin-right: 20px; /* 아이콘 오른쪽에 5px의 간격 추가 */
+  color: gray;
+}
