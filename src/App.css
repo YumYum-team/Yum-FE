@@ -1,6 +1,6 @@
 @font-face {
   font-family: "Nanum";
-  src: url("./assets/fonts/Nanum.ttf");
+  src: url("./assets/fonts/Nanum_Gothic/Nanum.ttf");
 }
 .App {
   text-align: center;
