@@ -1,4 +1,5 @@
 import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HeaderLayout from "./pages/HeaderLayout";
 import MapPage from "./pages/Mainpage/MapPage";
@@ -6,6 +7,7 @@ import Chatpage from "./pages/Chatting/ChatPage";
 import MyPage from "./pages/Mypage/MyPage";
 import LoginPage from "./components/Login/LoginPage";
 import LoginAdd from "./components/Login/LoginAdd";
+
 const router = createBrowserRouter([
   {
     path: "/",
