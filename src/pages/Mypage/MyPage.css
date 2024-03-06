@@ -46,6 +46,59 @@
   margin-top: 80px;
 }
 
+.inviteModal {
+  padding-top: 12rem;
+}
+
+.inviteTitle {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.modalBody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.userBox {
+  width: 400px;
+  height: 150px;
+  margin: 10px;
+  padding: 20px;
+}
+
+.userIdSearch {
+  margin: 10px;
+  padding: 5px;
+  width: 400px;
+}
+
+.inviteFooter {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalInviteClose {
+  background-color: white;
+  color: #996602;
+  font-weight: bold;
+  border: solid 1px #996602;
+  width: 200px;
+  margin-right: 20px;
+}
+
+.modalInvite {
+  background-color: #fff0aa;
+  color: #996602;
+  font-weight: bold;
+  border: solid 1px #996602;
+  width: 200px;
+}
+
 .myPage-button {
   display: flex;
   flex-wrap: wrap; /* 버튼들을 여러 줄로 나누기 위해 flex-wrap 속성 추가 */
@@ -66,4 +119,37 @@
   margin-right: 20px; /* 아이콘 오른쪽에 5px의 간격 추가 */
   color: gray;
   font-size: 30px;
+}
+
+.unregisterModal {
+  padding-top: 13rem;
+}
+
+.unregisterTitle img {
+  width: 10rem;
+}
+
+.modalUnregisterHeader {
+  background-color: #fff0aa;
+}
+
+.modalUnregisterBody {
+  padding: 30px;
+}
+
+.modalunregisterFooter {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalUnregisterYes,
+.modalUnregisterNo {
+  background-color: #fff0aa;
+  color: #996602;
+  font-weight: bold;
+  border: solid 1px #996602;
+  width: 200px;
+  margin: 0px 10px 0px 10px;
 }
