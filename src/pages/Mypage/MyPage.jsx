@@ -86,6 +86,8 @@ const MyPage = () => {
             초대하기
           </button>
 
+          {/*초대하기 모달*/}
+
           <Modal
             className="inviteModal"
             show={inviteModal}
@@ -95,7 +97,24 @@ const MyPage = () => {
               <Modal.Title className="inviteTitle">친구 초대하기</Modal.Title>
             </Modal.Header>
             <Modal.Body className="modalBody">
-              <div className="userBox"> 유저 정보 </div>
+              <div className="userBox">
+                <span className="userprofile">
+                  <img src={profile} alt="profile" />
+                </span>
+                <span className="searchId"> test1 </span>
+                <Button className="modalInvite" onClick={inviteHandler}>
+                  초대하기
+                </Button>
+              </div>
+              <div className="userBox">
+                <span className="userprofile">
+                  <img src={profile} alt="profile" />
+                </span>
+                <span className="searchId"> test2 </span>
+                <Button className="modalInvite" onClick={inviteHandler}>
+                  초대하기
+                </Button>
+              </div>
               <input
                 className="userIdSearch"
                 type="text"
@@ -107,9 +126,6 @@ const MyPage = () => {
             <Modal.Footer className="inviteFooter">
               <Button className="modalInviteClose" onClick={inviteCloseHandler}>
                 닫기
-              </Button>
-              <Button className="modalInvite" onClick={inviteHandler}>
-                초대
               </Button>
             </Modal.Footer>
           </Modal>
