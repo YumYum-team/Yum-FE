@@ -4,3 +4,29 @@
   background-color: white;
   border: none;
 }
+
+.calendarBox {
+  width: 80%;
+  max-width: 600px;
+  height: 0 auto;
+  margin: 30px 0px 0px 200px;
+}
+
+.fc-day-mon a,
+.fc-day-tue a,
+.fc-day-wed a,
+.fc-day-thu a,
+.fc-day-fri a {
+  color: black;
+  text-decoration: none;
+}
+
+.fc-day-sun a {
+  color: red;
+  text-decoration: none;
+}
+
+.fc-day-sat a {
+  color: blue;
+  text-decoration: none;
+}

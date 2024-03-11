@@ -90,6 +90,7 @@
   color: #996602;
   font-weight: bold;
   border: solid 1px #996602;
+  background-image: linear-gradient(to bottom, white, white);
 }
 
 .userIdSearch {
@@ -107,6 +108,7 @@
 
 .modalInviteClose {
   background-color: white;
+  background-image: linear-gradient(to bottom, white, white);
   color: #996602;
   font-weight: bold;
   border: solid 1px #996602;
@@ -179,6 +181,7 @@
 .modalUnregisterYes:hover,
 .modalUnregisterNo:hover {
   background-color: #fff0aa;
+  background-image: linear-gradient(to bottom, #fff0aa, #fff0aa);
   color: #996602;
   font-weight: bold;
   border: solid 1px #996602;

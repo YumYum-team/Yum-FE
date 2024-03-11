@@ -19,6 +19,7 @@ const MyPage = () => {
   const [unregisterModal, setUnregisterModal] = useState(false);
   const [email, setEmail] = useState();
   const [userId, setUserId] = useState();
+  const [invitationSent, setInvitationSent] = useState({});
   const navigate = useNavigate();
 
   const inviteModalhHandler = () => {
@@ -29,9 +30,12 @@ const MyPage = () => {
     setInviteModal(false);
   };
 
-  const inviteHandler = () => {
-    inviteCloseHandler();
-    //초대하기 버튼을 클릭했을 때 실행될 작업
+  const inviteHandler = (user) => {
+    // 초대하기 버튼을 눌렀을 때 초대 상태를 변경
+    setInvitationSent((prevState) => ({
+      ...prevState,
+      [user]: !prevState[user],
+    }));
   };
 
   const editButtonHandler = () => {
@@ -102,8 +106,11 @@ const MyPage = () => {
                   <img src={profile} alt="profile" />
                 </span>
                 <span className="searchId"> test1 </span>
-                <Button className="modalInvite" onClick={inviteHandler}>
-                  초대하기
+                <Button
+                  className="modalInvite"
+                  onClick={() => inviteHandler("test1")}
+                >
+                  {invitationSent["test1"] ? "취소" : "초대하기"}
                 </Button>
               </div>
               <div className="userBox">
@@ -111,8 +118,11 @@ const MyPage = () => {
                   <img src={profile} alt="profile" />
                 </span>
                 <span className="searchId"> test2 </span>
-                <Button className="modalInvite" onClick={inviteHandler}>
-                  초대하기
+                <Button
+                  className="modalInvite"
+                  onClick={() => inviteHandler("test2")}
+                >
+                  {invitationSent["test2"] ? "취소" : "초대하기"}
                 </Button>
               </div>
               <input
