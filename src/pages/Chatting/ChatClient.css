@@ -456,10 +456,10 @@
 }
 #frame #sidepanel #contacts::-webkit-scrollbar {
   width: 8px;
-  background: #fcf3d0;
+  background: #fcfaf5;
 }
 #frame #sidepanel #contacts::-webkit-scrollbar-thumb {
-  background-color: #403524;
+  background-color: #eedfc8;
 }
 #frame #sidepanel #contacts ul li.contact {
   position: relative;
@@ -670,7 +670,9 @@
   background-color: rgba(240, 229, 197, 0.952);
 }
 #frame .content .messages ul li {
-  display: inline-block;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-start;
   clear: both;
   float: left;
   margin: 15px 15px 5px 15px;
@@ -697,19 +699,28 @@
   float: right;
 }
 #frame .content .messages ul li img {
-  float: right;
   width: 30px;
   border-radius: 50%;
 }
+#frame .content .messages ul li .message-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
 #frame .content .messages ul li p {
-  display: inline-block;
-  float: right;
-  padding: 10px 15px;
+  padding: 7px 13px;
   border-radius: 10px;
   max-width: 205px;
   line-height: 130%;
-  margin-right: 20px;
+  margin: 0 15px 0 0;
 }
+.message-time {
+  font-weight: lighter;
+  font-size: smaller;
+  color: #472b0d;
+  padding: 0 15px 0 0;
+}
+
 @media screen and (min-width: 735px) {
   #frame .content .messages ul li p {
     max-width: 300px;
@@ -799,4 +810,37 @@
 
 .contentName {
   color: #563b22;
+}
+
+/* 친구목록 */
+.friend-list {
+  padding: 0;
+}
+
+.friend-item {
+  display: flex;
+  align-items: center;
+  border: 1px solid #f6dcae;
+  background-color: white;
+  border-radius: 15px;
+  margin-top: 3px;
+}
+
+.friend-item img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  margin: 0 20px 0 20px;
+}
+
+.friend-info {
+  font-weight: lighter;
+  font-size: smaller;
+  margin-top: 5px;
+  flex: 1;
+}
+@media screen and (max-width: 735px) {
+  .friend-item img {
+    margin-left: 3px;
+  }
 }

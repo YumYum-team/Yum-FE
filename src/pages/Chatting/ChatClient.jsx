@@ -1,16 +1,97 @@
 import React, { useState, useEffect } from "react";
 import "./ChatClient.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import profileImage from "../../assets/images/profile.png";
 
 const ChatClient = () => {
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState("");
+  const [friendList, setFriendList] = useState([]);
 
   useEffect(() => {
     // 스크롤을 항상 가장 아래로 유지
     const messagesContainer = document.querySelector(".messages");
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    fetchFriendList();
   }, [messages]);
+
+  useEffect(() => {
+    const mockFriendList = [
+      {
+        id: 1,
+        name: "John Doe",
+        email: "john@example.com",
+        profilePicture: profileImage,
+      },
+      {
+        id: 2,
+        name: "Jane Doe",
+        email: "jane@example.com",
+        profilePicture: profileImage,
+      },
+      {
+        id: 3,
+        name: "Doe",
+        email: "jn@example.com",
+        profilePicture: profileImage,
+      },
+      {
+        id: 4,
+        name: "Jane",
+        email: "ja@example.com",
+        profilePicture: profileImage,
+      },
+      {
+        id: 5,
+        name: "De",
+        email: "j@example.com",
+        profilePicture: profileImage,
+      },
+      {
+        id: 6,
+        name: "Jae",
+        email: "j@example.com",
+        profilePicture: profileImage,
+      },
+      {
+        id: 7,
+        name: "Doe",
+        email: "jn@example.com",
+        profilePicture: profileImage,
+      },
+      {
+        id: 8,
+        name: "Jane",
+        email: "ja@example.com",
+        profilePicture: profileImage,
+      },
+      {
+        id: 9,
+        name: "De",
+        email: "j@example.com",
+        profilePicture: profileImage,
+      },
+      {
+        id: 10,
+        name: "Jae",
+        email: "j@example.com",
+        profilePicture: profileImage,
+      },
+    ];
+
+    setFriendList(mockFriendList);
+  }, []);
+
+  // 서버에서 FriendList를 가져오는 함수
+  const fetchFriendList = async () => {
+    try {
+      const response = await fetch("your-api-endpoint-for-friend-list");
+      const data = await response.json();
+      setFriendList(data);
+    } catch (error) {
+      console.error("Error fetching friend list:", error);
+    }
+  };
 
   const handleProfileImgClick = () => {
     // 프로필 이미지 클릭 시 상태 옵션 토글
@@ -69,9 +150,24 @@ const ChatClient = () => {
 
     const messagesList = document.querySelector(".messages ul");
 
+    const currentTime = new Date();
+    const hours = currentTime.getHours();
+    const minutes = currentTime.getMinutes();
+
+    const formattedHours = hours < 10 ? `0${hours}` : hours;
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+    const formattedTime = `${formattedHours}:${formattedMinutes}`;
+
     const newMessageElement = document.createElement("li");
     newMessageElement.className = "sent";
-    newMessageElement.innerHTML = `<img src="./images/profile.png" alt="" /><p>${message}</p>`;
+    newMessageElement.innerHTML = `
+    <img src=${profileImage} alt="프로필" />
+    <div class="message-content">
+      <p>${message}</p>
+      <span class="message-time">${formattedTime}</span>
+    </div>
+  `;
     messagesList.appendChild(newMessageElement);
 
     messageInput.value = null;
@@ -92,7 +188,6 @@ const ChatClient = () => {
   };
 
   const handleInputKeyDown = (e) => {
-    // 엔터 키를 누를 때 새로운 메시지 추가
     if (e.which === 13) {
       newMessage();
       e.preventDefault();
@@ -109,10 +204,8 @@ const ChatClient = () => {
         <div id="profile">
           <div className="wrap">
             <img
-              id="profile-img"
-              src="./images/profile.png"
-              className="online"
-              alt=""
+              src={profileImage}
+              alt="프로필 이미지"
               onClick={handleProfileImgClick}
             />
             <p>이하름</p>
@@ -160,7 +253,19 @@ const ChatClient = () => {
           <input type="text" placeholder="친구찾기" />
         </div>
         <div id="contacts">
-          <ul>{/* 연락처 목록 */}</ul>
+          <div className="listGroup">
+            <ul className="friend-list">
+              {friendList.map((friend) => (
+                <li key={friend.id} className="friend-item">
+                  <img src={friend.profilePicture} alt={friend.name} />
+                  <div className="friend-info">
+                    <p>{friend.name}</p>
+                    <p>{friend.email}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
 
@@ -178,7 +283,7 @@ const ChatClient = () => {
 
       <div className="content">
         <div className="contact-profile">
-          <img id="profile-img" src="./images/profile.png" alt="" />
+          <img id="profile-img" src={profileImage} alt="프로필 이미지" />
           <p className="contentName">모임방1</p>
           <i className="bi bi-pencil-square"></i>
           <div className="chatSetting">
