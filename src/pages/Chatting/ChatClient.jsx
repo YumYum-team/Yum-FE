@@ -7,13 +7,8 @@ const ChatClient = () => {
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState("");
   const [friendList, setFriendList] = useState([]);
-
-  useEffect(() => {
-    // 스크롤을 항상 가장 아래로 유지
-    const messagesContainer = document.querySelector(".messages");
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    fetchFriendList();
-  }, [messages]);
+  const [filteredFriends, setFilteredFriends] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
 
   useEffect(() => {
     const mockFriendList = [
@@ -59,35 +54,24 @@ const ChatClient = () => {
         email: "jn@example.com",
         profilePicture: profileImage,
       },
-      {
-        id: 8,
-        name: "Jane",
-        email: "ja@example.com",
-        profilePicture: profileImage,
-      },
-      {
-        id: 9,
-        name: "De",
-        email: "j@example.com",
-        profilePicture: profileImage,
-      },
-      {
-        id: 10,
-        name: "Jae",
-        email: "j@example.com",
-        profilePicture: profileImage,
-      },
     ];
-
     setFriendList(mockFriendList);
+    setFilteredFriends(mockFriendList); // 초기에는 전체 목록을 보여주도록 설정
   }, []);
+
+  useEffect(() => {
+    const messagesContainer = document.querySelector(".messages");
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    fetchFriendList();
+  }, [messages]);
 
   // 서버에서 FriendList를 가져오는 함수
   const fetchFriendList = async () => {
     try {
-      const response = await fetch("your-api-endpoint-for-friend-list");
+      const response = await fetch("친구목록api");
       const data = await response.json();
       setFriendList(data);
+      setFilteredFriends(data); // 새로 받은 목록을 검색 결과에 반영
     } catch (error) {
       console.error("Error fetching friend list:", error);
     }
@@ -187,6 +171,19 @@ const ChatClient = () => {
     setMessageInput(e.target.value);
   };
 
+  const handleInputSearch = (e) => {
+    const searchTerm = e.target.value.trim().toLowerCase();
+
+    const filtered = friendList.filter(
+      (friend) =>
+        friend.name.toLowerCase().includes(searchTerm) ||
+        friend.email.toLowerCase().includes(searchTerm)
+    );
+
+    setFilteredFriends(filtered);
+    setSearchInput(e.target.value);
+  };
+
   const handleInputKeyDown = (e) => {
     if (e.which === 13) {
       newMessage();
@@ -250,12 +247,17 @@ const ChatClient = () => {
         <p id="listText">내친구목록</p>
         <div id="search">
           <i className="bi bi-search"></i>
-          <input type="text" placeholder="친구찾기" />
+          <input
+            type="text"
+            placeholder="친구찾기"
+            value={searchInput}
+            onChange={handleInputSearch}
+          />
         </div>
         <div id="contacts">
           <div className="listGroup">
             <ul className="friend-list">
-              {friendList.map((friend) => (
+              {filteredFriends.map((friend) => (
                 <li key={friend.id} className="friend-item">
                   <img src={friend.profilePicture} alt={friend.name} />
                   <div className="friend-info">
