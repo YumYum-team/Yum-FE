@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "./ChangePassword.css";
 import { leftArrow } from "../../assets/images";
 
 const ChangePassword = () => {
@@ -24,42 +25,58 @@ const ChangePassword = () => {
   };
 
   return (
-    <div>
-      <img src={leftArrow} alt="돌아가기" onClick={() => navigate("/login")} />
-      <h2>비밀번호 변경</h2>
-      <form>
-        <div>
-          <input
-            type="text"
-            placeholder="이메일 코드"
-            id="emailCode"
-            value={emailCode}
-            onChange={(e) => setEmailCode(e.target.value)}
+    <div className="container">
+      <div className="cp-box">
+        <div className="cp-h1">
+          <img
+            className="leftArrow"
+            src={leftArrow}
+            alt="돌아가기"
+            onClick={() => navigate("/login")}
           />
+          <label>비밀번호 변경</label>
         </div>
-        <div>
-          <input
-            type="password"
-            placeholder="새 비밀번호"
-            id="newPassword"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-          />
-        </div>
-        <div>
-          <input
-            type="password"
-            placeholder="새 비밀번호 확인"
-            id="confirmPassword"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-        </div>
-        <button type="button" onClick={handleChangePassword}>
-          비밀번호 변경하기
-        </button>
-      </form>
-      <p>{message}</p>
+        <form>
+          <div>
+            <input
+              className="cp-email"
+              type="text"
+              placeholder="이메일 코드"
+              id="emailCode"
+              value={emailCode}
+              onChange={(e) => setEmailCode(e.target.value)}
+            />
+          </div>
+          <div>
+            <input
+              className="cp-passowrd"
+              type="password"
+              placeholder="새 비밀번호"
+              id="newPassword"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+          </div>
+          <div>
+            <input
+              className="cp-passowrdcheck"
+              type="password"
+              placeholder="새 비밀번호 확인"
+              id="confirmPassword"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </div>
+          <button
+            className="cp-bt"
+            type="button"
+            onClick={handleChangePassword}
+          >
+            비밀번호 변경하기
+          </button>
+        </form>
+        <p>{message}</p>
+      </div>
     </div>
   );
 };

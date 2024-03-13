@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./LoginPage.css";
 import { Logo, google, kakao, naver } from "../../assets/images";
 
 const User = {
@@ -72,7 +73,7 @@ export default function LoginPage() {
             <div>올바른 이메일을 입력해주세요.</div>
           )}
         </div>
-        <div className="from-group">
+        <div className="login-group">
           <input
             className="login-password"
             type="password"

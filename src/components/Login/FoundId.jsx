@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./FoundId.css";
 import axios from "axios";
 import { leftArrow } from "../../assets/images";
 
@@ -36,37 +37,52 @@ const FoundId = () => {
   };
 
   return (
-    <div>
-      <img src={leftArrow} alt="돌아가기" onClick={() => navigate("/login")} />
-      <h2>아이디 찾기</h2>
-      <form>
-        <div>
-          <input
-            type="text"
-            placeholder="이름"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+    <div className="container">
+      <div className="fi-box">
+        <div className="fi-h1">
+          <img
+            className="leftArrow"
+            src={leftArrow}
+            alt="돌아가기"
+            onClick={() => navigate("/login")}
           />
+          <label>아이디 찾기</label>
         </div>
-        <div>
-          <input
-            type="email"
-            placeholder="이메일"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <button type="button" onClick={handleEmailValidation}>
-            이메일 인증
+        <form>
+          <div>
+            <input
+              className="fi-id"
+              type="text"
+              placeholder="이름"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <div>
+            <input
+              className="fi-email"
+              type="email"
+              placeholder="이메일"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <button
+              className="fi-check"
+              type="button"
+              onClick={handleEmailValidation}
+            >
+              인증
+            </button>
+            {isEmailValid && <p>이메일이 인증되었습니다.</p>}
+          </div>
+          <button className="fi-bt" type="button" onClick={handleFindId}>
+            아이디 찾기
           </button>
-          {isEmailValid && <p>이메일이 인증되었습니다.</p>}
-        </div>
-        <button type="button" onClick={handleFindId}>
-          아이디 찾기
-        </button>
-      </form>
-      <p>{message}</p>
+        </form>
+        <p>{message}</p>
+      </div>
     </div>
   );
 };

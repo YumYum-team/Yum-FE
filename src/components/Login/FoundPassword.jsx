@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./FoundPassword.css";
 import axios from "axios";
 import { leftArrow } from "../../assets/images";
 
@@ -33,35 +34,58 @@ const FoundPassword = () => {
   };
 
   return (
-    <div>
-      <img src={leftArrow} alt="돌아가기" onClick={() => navigate("/login")} />
-      <h2>비밀번호 찾기</h2>
-      <form>
-        <div>
-          <input
-            type="text"
-            placeholder="아이디"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
+    <div className="container">
+      <div className="fp-box">
+        <div className="fp-h1">
+          <img
+            className="leftArrow"
+            src={leftArrow}
+            alt="돌아가기"
+            onClick={() => navigate("/login")}
           />
+          <label>비밀번호 찾기</label>
         </div>
-        <div>
-          <input
-            type="email"
-            placeholder="이메일"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <button type="button" onClick={handleEmailValidation}>
-            인증
-          </button>
-          {isEmailValid && <p>이메일이 인증되었습니다.</p>}
-        </div>
-      </form>
-      <p>{message}</p>
-      <button type="button" onClick={handlePasswordChangePage}>
-        비밀번호 변경하기
-      </button>
+        <form>
+          <div>
+            <input
+              className="pf-id"
+              type="text"
+              placeholder="아이디"
+              value={id}
+              onChange={(e) => setId(e.target.value)}
+            />
+          </div>
+          <div>
+            <input
+              className="pf-email"
+              type="email"
+              placeholder="이메일"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <button
+              className="pf-check"
+              type="button"
+              onClick={handleEmailValidation}
+            >
+              인증
+            </button>
+            {isEmailValid && (
+              <p className={isEmailValid ? "success-message" : "error-message"}>
+                이메일이 인증되었습니다.
+              </p>
+            )}
+          </div>
+        </form>
+        <p>{message}</p>
+        <button
+          className="pf-bt"
+          type="button"
+          onClick={handlePasswordChangePage}
+        >
+          비밀번호 변경하기
+        </button>
+      </div>
     </div>
   );
 };
