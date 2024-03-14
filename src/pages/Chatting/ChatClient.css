@@ -844,3 +844,50 @@
     margin-left: 3px;
   }
 }
+/* ================모달 */
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  top: 50%;
+  left: 50%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  z-index: 1000;
+  border: 1px solid #f5edbe;
+}
+
+.image-selection img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin: 5px;
+}
+
+.image-selection img.selected {
+  border: 2px solid rgb(247, 247, 2);
+}
+
+.image-selection-pick {
+  width: 30px;
+  height: 30px;
+}
+.modalFriendImg {
+  width: 30px;
+  height: 30px;
+}
+
+.modal-content input {
+  display: flex;
+  align-items: start;
+}
+
+.modal-content {
+  color: #69431a;
+  border: none;
+}
