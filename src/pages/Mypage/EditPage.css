@@ -21,9 +21,15 @@
   /* border: 1px solid red; */
 }
 
+.editProfile {
+  padding-top: 90px;
+}
+
 .editProfile img {
-  padding-top: 80px;
   width: 250px;
+  height: 250px;
+  border-radius: 50%; /* 이미지를 원형으로 만듭니다. */
+  object-fit: cover; /* 이미지를 자르지 않고 조정합니다. */
 }
 
 .editProfile {
@@ -31,11 +37,12 @@
   display: inline-block;
 }
 
-.editProdileIcon {
+.editProfileIcon {
   position: absolute;
   font-size: 30px;
   bottom: 20px;
   right: 30px;
+  opacity: 80%;
 }
 
 .editRightSection {
@@ -56,7 +63,7 @@
 }
 
 .textInfo {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   width: 120px;
   margin-right: 30px;
@@ -68,6 +75,15 @@
   background-color: #fff9de;
   padding: 10px 10px 10px 5px;
   border: none;
+  border-radius: 8px;
+}
+
+.editTextBox {
+  width: 250px;
+  background-color: white;
+  padding: 10px 10px 10px 5px;
+  border: 1px solid #996602;
+  border-radius: 8px;
 }
 
 .editButtonBox {
@@ -86,4 +102,13 @@
   border-radius: 10px;
   margin: 20px;
   padding: 10px 20px 10px 20px;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  padding-top: 5px;
+  margin-top: 5px;
+  margin-left: 10rem;
+  display: block;
 }
