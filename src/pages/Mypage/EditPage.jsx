@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useTransition } from "react";
 import { ChevronLeft, PencilSquare } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import "./EditPage.css";
@@ -96,7 +96,36 @@ const EditPage = () => {
   };
 
   const handleSubmit = () => {
-    // 비밀번호 변경 요청 보내는 로직 추가
+    if (userInfo.password !== userInfo.passwordConfirm) {
+      alert("비밀번호가 일치하지 않습니다. 다시 확인해주세요");
+      setUserInfo({
+        ...userInfo,
+        password: "",
+        passwordConfirm: "",
+      });
+      setPasswordError("");
+      setPasswordMatchError("");
+      return;
+    }
+    if (
+      !userInfo.password.match(
+        /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[$`~!@$!%*#^?&()\-_=+])[a-zA-Z\d$`~!@$!%*#^?&()\-_=+]{8,20}$/
+      )
+    ) {
+      alert(
+        "비밀번호는 영문, 숫자, 특수문자를 포함하여 8자 이상이어야 합니다."
+      );
+      setUserInfo({
+        ...userInfo,
+        password: "",
+        passwordConfirm: "",
+      });
+      setPasswordError("");
+      setPasswordMatchError("");
+      return;
+    }
+    alert("비밀번호가 변경되었습니다.");
+    navigate("/");
   };
 
   return (
