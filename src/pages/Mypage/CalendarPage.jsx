@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { ChevronLeft, X } from "react-bootstrap-icons";
 import "./CalendarPage.css";
 import { useNavigate } from "react-router-dom";
@@ -30,7 +30,8 @@ const CalendarPage = () => {
   const saveMemo = () => {
     if (currentDate) {
       const newMemos = [...memos];
-      newMemos.push({ date: currentDate, memo: memoInput }); //기존메모, 새로운 메모 추가
+      const id = Date.now(); // 고유한 id 생성
+      newMemos.push({ id, date: currentDate, memo: memoInput }); //기존메모, 새로운 메모 추가
       setMemos(newMemos);
       setMemoInput(""); //메모 입력칸 초기화
     }
@@ -40,8 +41,10 @@ const CalendarPage = () => {
     setMemoInput(memo); //메모 클릭시 메모 입력칸 아래로 표시
   };
 
-  const hideMemo = () => {
-    setShowMemo(false); //x버튼 클릭시 메모 작성 창 숨기기
+  const deleteMemo = (id) => {
+    const updatedMemos = memos.filter((memo) => memo.id !== id);
+    setMemos(updatedMemos);
+    // setShowMemo(false); // 삭제 후 메모 창 닫기
   };
 
   const memosForCurrentDate = memos.filter((memo) => memo.date === currentDate);
@@ -61,15 +64,30 @@ const CalendarPage = () => {
               dateClick={dateClickHandle}
               locale={koLocale}
               events={memos.map((memo) => ({
-                title: "❤",
+                title: "🟡",
                 date: memo.date,
-                memo: memo.memo,
+                backgroundColor: "transparent",
+                borderColor: "transparent",
               }))}
               eventClick={(arg) =>
                 memoClickHandle(arg.event.extendedProps.memo)
               }
-              eventMouseEnter={() => (document.body.style.cursor = "pointer")}
-              eventMouseLeave={() => (document.body.style.cursor = "auto")}
+              dayCellContent={(arg) => {
+                const content = document.createElement("div");
+                content.textContent = arg.dayNumberText;
+
+                // 날짜 셀에 마우스를 올렸을 때
+                content.addEventListener("mouseenter", () => {
+                  content.style.cursor = "pointer"; // 커서 스타일 변경
+                });
+
+                // 날짜 셀에서 마우스를 떼었을 때
+                content.addEventListener("mouseleave", () => {
+                  content.style.cursor = "auto"; // 기본 커서로 변경
+                });
+
+                return { domNodes: [content] };
+              }}
             />
           </div>
         </div>
@@ -78,11 +96,7 @@ const CalendarPage = () => {
           <div className="rightSection">
             <div className="gameResultBox">
               <div className="gameResult">게임 결과</div>
-              <img
-                className="gameResultImage"
-                src="c:\Users\Administrator\Desktop\화면 캡처 2024-03-21 184109.png "
-                alt="양식"
-              />
+              <img className="gameResultImage" src="{image}" alt="게임결과" />
             </div>
             <div className="memoHeader">메모</div>
             <textarea
@@ -95,17 +109,26 @@ const CalendarPage = () => {
               <button className="saveButton" onClick={saveMemo}>
                 저장
               </button>
-              <button className="closeButton" onClick={hideMemo}>
+              <button
+                className="closeButton"
+                onClick={() => setShowMemo(false)}
+              >
                 <X />
               </button>
             </div>
             {currentDate && (
               <div className="memoListBox">
                 <div className="memoList">메모목록({currentDate})</div>
-                <ul>
-                  {memosForCurrentDate.map((memo, index) => (
-                    <li key={index} onClick={() => memoClickHandle(memo.memo)}>
+                <ul className="">
+                  {memosForCurrentDate.map((memo) => (
+                    <li className="memo" key={memo.id}>
                       {memo.memo}
+                      <button
+                        className="deleteMemo"
+                        onClick={() => deleteMemo(memo.id)}
+                      >
+                        삭제
+                      </button>
                     </li>
                   ))}
                 </ul>

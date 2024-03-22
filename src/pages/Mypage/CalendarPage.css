@@ -11,7 +11,7 @@
   max-width: 750px;
   height: 0 auto;
 
-  border: 1px solid red;
+  /* border: 1px solid red; */
 }
 
 .fc-day-mon a,
@@ -40,24 +40,26 @@
 
 .leftSection {
   width: 800px;
-  height: auto;
+  height: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-left: 10rem;
-  border: 3px solid orange;
+  margin-left: 6rem;
+  padding: 20px;
+  border: 3px solid #fff0aa;
+  border-radius: 20px;
 }
 
 .rightSection {
-  width: 500px;
+  width: 600px;
   height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  margin-left: 5rem;
+  margin-left: 2rem;
   padding-top: 10px;
-  border: 1px solid yellow;
+  border: 3px solid #fff0aa;
+  border-radius: 20px;
 }
 
 .gameResultBox {
@@ -66,7 +68,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid Pink;
+  /* border: 1px solid Pink; */
 }
 
 .gameResult {
@@ -76,12 +78,14 @@
 }
 
 .gameResultImage {
-  width: 300px;
-  height: 130px;
+  width: 400px;
+  height: 150px;
   border: 1px solid #996602;
+  background-color: white;
 }
 
 .memoHeader {
+  margin-top: 10px;
   font-size: 20px;
   font-weight: bold;
 }
@@ -97,26 +101,35 @@
   margin-top: 10px;
 }
 
-.buttonBox {
-  margin: 10px;
-}
-
 .saveButton,
 .closeButton {
   background-color: #fff0aa;
   border: solid 1px #996602;
   border-radius: 5px;
-  margin: 10px;
+  margin: 20px 10px 0px 10px;
   font-size: 15px;
 }
 
 .memoListBox {
   margin-top: 20px;
-  border: 1px solid blue;
+  /* border: 1px solid blue; */
 }
 
 .memoList {
+  margin: 10px;
   font-size: 17px;
   font-weight: bold;
-  border: 1px solid green;
+  /* border: 1px solid green; */
+}
+
+.memo {
+  padding: 7px;
+}
+
+.deleteMemo {
+  font-size: 15px;
+  background-color: #fff0aa;
+  border: solid 1px #996602;
+  border-radius: 5px;
+  margin-left: 3rem;
 }
