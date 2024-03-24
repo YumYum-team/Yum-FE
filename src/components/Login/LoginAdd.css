@@ -35,14 +35,6 @@
   cursor: pointer;
 }
 
-.Add-id {
-  width: 60%;
-  padding: 7px;
-  margin-top: 8px;
-  border: none;
-  margin-bottom: 5px;
-}
-
 .Add-check {
   padding: 7px;
   margin-top: 8px;
@@ -53,42 +45,36 @@
   margin-bottom: 5px;
 }
 
-.Add-email {
-  width: 60%;
+.login {
+  width: 36.5%;
   padding: 7px;
   margin-top: 8px;
   border: none;
   margin-bottom: 5px;
+  margin-right: 7px;
 }
 
-.Add-name {
+.domain {
+  width: 36.5%;
+  padding: 7px;
+  margin-top: 8px;
+  border: none;
+  margin-bottom: 5px;
+  margin-left: 7px;
+}
+
+.Add {
   width: 80%;
   padding: 7px;
   margin-top: 8px;
   border: none;
   margin-bottom: 5px;
-}
-
-.Add-password {
-  width: 80%;
-  padding: 7px;
-  margin-top: 8px;
-  border: none;
-  margin-bottom: 5px;
-}
-
-.Add-passowrdcheck {
-  width: 80%;
-  padding: 7px;
-  margin-top: 8px;
-  border: none;
-  margin-bottom: 10px;
 }
 
 .Add-up {
   width: 80%;
-  padding: 7px;
-  margin-top: 8px;
+  padding: 10px;
+  margin-top: 2rem;
   border: none;
   color: white;
   font-weight: bolder;

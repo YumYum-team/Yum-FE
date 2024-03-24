@@ -16,7 +16,6 @@ const ChangePassword = () => {
       // 새 비밀번호를 서버에 전달하고 변경합니다.
       await axios.post("/api/change-password", { emailCode, newPassword });
       setMessage("비밀번호가 성공적으로 변경되었습니다.");
-      // 비밀번호 변경 후 로그인 페이지로 이동합니다.
       navigate("/login");
     } catch (error) {
       console.error("비밀번호 변경 실패:", error);
@@ -37,7 +36,7 @@ const ChangePassword = () => {
           <label>비밀번호 변경</label>
         </div>
         <form>
-          <div>
+          <div className="change-password">
             <input
               className="cp-email"
               type="text"
@@ -46,8 +45,6 @@ const ChangePassword = () => {
               value={emailCode}
               onChange={(e) => setEmailCode(e.target.value)}
             />
-          </div>
-          <div>
             <input
               className="cp-passowrd"
               type="password"

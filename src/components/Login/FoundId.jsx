@@ -6,6 +6,7 @@ import { leftArrow } from "../../assets/images";
 
 const FoundId = () => {
   const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(false);
@@ -13,9 +14,8 @@ const FoundId = () => {
 
   const handleFindId = async () => {
     try {
-      // 서버 측에 이메일을 보내어 해당 이메일로 가입된 아이디를 찾습니다.
       const response = await axios.post("/api/find-id", { name, email });
-      const userId = response.data.id; // 서버로부터 찾은 아이디를 받아옵니다.
+      const userId = response.data.id;
       setMessage(`찾은 아이디는 ${userId}입니다.`);
     } catch (error) {
       console.error("아이디 찾기 실패:", error);
@@ -25,7 +25,6 @@ const FoundId = () => {
 
   const handleEmailValidation = async () => {
     try {
-      // 이메일 인증을 위해 서버 측에 이메일을 보냅니다.
       await axios.post("/api/send-email", { email });
       setIsEmailValid(true);
       setMessage("인증 이메일을 전송했습니다.");
@@ -49,24 +48,20 @@ const FoundId = () => {
           <label>아이디 찾기</label>
         </div>
         <form>
-          <div>
+          <div className="find">
             <input
               className="fi-id"
               type="text"
               placeholder="이름"
-              id="name"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(event) => setName(event.target.value)}
             />
-          </div>
-          <div>
             <input
               className="fi-email"
               type="email"
               placeholder="이메일"
-              id="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(event) => setEmail(event.target.value)}
             />
             <button
               className="fi-check"

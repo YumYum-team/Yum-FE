@@ -3,6 +3,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
+  font-size: 13px;
 }
 
 .login-box {
@@ -20,6 +21,13 @@
   width: 135px;
   height: 45px;
   border-radius: 5px;
+}
+
+.social-login {
+  background-color: #fff0aa;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }
 
 .login-logo img {
@@ -58,24 +66,8 @@ input::placeholder {
   background-color: #ffc700;
 }
 
-.LoginAdd-in {
-  border: none;
-  padding: 5px;
-  font-size: 12px;
-  color: #909090;
-  background-color: #fff0aa;
-  cursor: pointer;
-}
-
-.FoundId-in {
-  border: none;
-  padding: 5px;
-  font-size: 12px;
-  color: #909090;
-  background-color: #fff0aa;
-  cursor: pointer;
-}
-
+.LoginAdd-in,
+.FoundId-in,
 .FoundPassword-in {
   border: none;
   padding: 5px;

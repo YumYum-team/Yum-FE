@@ -2,51 +2,61 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LoginPage.css";
 import { Logo, google, kakao, naver } from "../../assets/images";
+import JSEncrypt from "jsencrypt";
 
-const User = {
-  email: "test123@test.com",
-  password: "test123@",
-};
-
-export default function LoginPage() {
+function LoginPage() {
   const navigate = useNavigate();
-
-  const [id, setid] = useState("");
+  const [id, setId] = useState("");
   const [password, setPassword] = useState("");
-  const [idValid, setidValid] = useState(false);
+  const [idValid, setIdValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
   const [notNext, setNotNext] = useState(false);
+  const [publicKey, setPublicKey] = useState("");
 
-  const loginHandler = () => {
-    if (id === User.id && password === User.password) {
-      navigate("/"); //알림 없애고 메인페이지로 이동하게 하기
-    } else {
-      alert("등록되지 않은 회원입니다.");
-    }
-    setid("");
-    setPassword("");
-    setNotNext(true);
+  const REST_API_KEY = "24f02abbba4b1f9eb550023d7b47a31d";
+  const REDIRECT_URI = "http://localhost:3000/kakao/callback";
+  const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+
+  useEffect(() => {
+    const fetchPublicKey = async () => {
+      try {
+        const response = await fetch("/auth/public-key", { method: "GET" });
+        const key = await response.text();
+        setPublicKey(key);
+      } catch (error) {
+        console.error("Could not fetch public key", error);
+      }
+    };
+    fetchPublicKey();
+  }, []);
+
+  const encryptWithPublicKey = (text) => {
+    if (!publicKey) return "";
+    const encrypt = new JSEncrypt();
+    encrypt.setPublicKey(publicKey);
+    return encrypt.encrypt(text);
   };
 
-  const LoginidHandler = (event) => {
-    setid(event.target.value);
-    const regex = /[a-zA-Z0-9._%+-]/;
-    if (regex.test(event.target.value)) {
-      setidValid(true);
-    } else {
-      setidValid(false);
+  const loginHandler = async () => {
+    const encryptedId = encryptWithPublicKey(id);
+    const encryptedPassword = encryptWithPublicKey(password);
+    const formData = new FormData();
+    formData.append("loginId", encryptedId);
+    formData.append("password", encryptedPassword);
+    try {
+      const response = await fetch("/auth/login", {
+        method: "POST",
+        body: formData,
+      });
+      if (!response.ok) throw new Error("Login failed");
+      navigate("/organization-list");
+    } catch (error) {
+      alert("로그인 정보를 다시 확인해 주세요.");
     }
   };
 
-  const LoginPasswordHandler = (event) => {
-    setPassword(event.target.value);
-    const regex =
-      /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])(?!.*[^a-zA-z0-9$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/;
-    if (regex.test(event.target.value)) {
-      setPasswordValid(true);
-    } else {
-      setPasswordValid(false);
-    }
+  const handlekakaoClick = () => {
+    window.location.href = link;
   };
 
   useEffect(() => {
@@ -65,72 +75,51 @@ export default function LoginPage() {
             type="text"
             placeholder="아이디"
             value={id}
-            onChange={LoginidHandler}
+            onChange={(value) => setId(value)}
           />
-        </div>
-        <div className="errorMessageWrap">
-          {!idValid && id.length > 0 && (
-            <div>올바른 이메일을 입력해주세요.</div>
-          )}
-        </div>
-        <div className="login-group">
           <input
-            className="login-password"
+            className="login-id"
             type="password"
             placeholder="비밀번호"
             value={password}
-            onChange={LoginPasswordHandler}
+            onChange={(value) => setPassword(value)}
           />
+
+          <button className="loginSumbit" onClick={loginHandler}>
+            로그인
+          </button>
         </div>
-        <div className="errorMessageWrap">
-          {!passwordValid && password.length > 0 && (
-            <div>영문, 숫자, 특수문자 포함 8자 이상 입력하세요.</div>
-          )}
-        </div>
-        <button
-          className="loginSumbit"
-          disabled={notNext}
-          onClick={loginHandler}
-        >
-          로그인
-        </button>
-        <div>
-          <span>
-            <button
-              className="LoginAdd-in"
-              onClick={() => navigate("/LoginAdd")}
-              type="button"
-            >
-              회원가입
-            </button>
-          </span>
-          <span>
-            <button
-              className="FoundId-in"
-              onClick={() => navigate("/FoundId")}
-              type="button"
-            >
-              아이디 찾기
-            </button>
-          </span>
-          <span>
-            <button
-              className="FoundPassword-in"
-              onClick={() => navigate("/FoundPassword")}
-              type="button"
-            >
-              비밀번호 찾기
-            </button>
-          </span>
+        <div className="button">
+          <button
+            className="LoginAdd-in"
+            onClick={() => navigate("/LoginAdd")}
+            type="button"
+          >
+            회원가입
+          </button>
+          <button
+            className="FoundId-in"
+            onClick={() => navigate("/FoundId")}
+            type="button"
+          >
+            아이디 찾기
+          </button>
+          <button
+            className="FoundPassword-in"
+            onClick={() => navigate("/FoundPassword")}
+            type="button"
+          >
+            비밀번호 찾기
+          </button>
         </div>
         <div className="line">다른 계정으로 로그인</div>
         <div className="social-login-icons">
           <a href="">
             <img src={google} alt="Google" />
           </a>
-          <a href="">
+          <button className="social-login" onClick={handlekakaoClick}>
             <img src={kakao} alt="Kakao" />
-          </a>
+          </button>
           <a href="">
             <img src={naver} alt="naver" />
           </a>
@@ -139,3 +128,5 @@ export default function LoginPage() {
     </div>
   );
 }
+
+export default LoginPage;

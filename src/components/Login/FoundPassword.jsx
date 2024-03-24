@@ -13,7 +13,6 @@ const FoundPassword = () => {
 
   const handleEmailValidation = async () => {
     try {
-      // 이메일 인증을 위해 서버 측에 이메일을 보냅니다.
       await axios.post("/api/send-email", { email });
       setIsEmailValid(true);
       setMessage("이메일이 인증되었습니다.");

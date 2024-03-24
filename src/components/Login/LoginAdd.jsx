@@ -4,62 +4,80 @@ import "./LoginAdd.css";
 import axios from "axios";
 import { leftArrow } from "../../assets/images";
 
-const LoginAdd = () => {
+function LoginAdd() {
   const navigate = useNavigate();
+
   const [loginId, setLoginId] = useState("");
-  const [isLoginIdValid, setIsLoginIdValid] = useState(true); // 초기값을 true로 설정
   const [email, setEmail] = useState("");
-  const [isEmailValid, setIsEmailValid] = useState(true); // 초기값을 true로 설정
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [phoneNum, setPhoneNum] = useState("");
   const [message, setMessage] = useState("");
 
-  const handleCheckLoginId = async () => {
-    try {
-      // 아이디 중복 확인 요청
-      // const response = await axios.post("/api/check-loginId", { loginId });
-      // setIsLoginIdValid(response.data.valid);
-      // 임시로 true로 설정합니다.
-      setIsLoginIdValid(true);
-      setMessage(""); // 메시지 초기화
-    } catch (error) {
-      console.error("아이디 중복 확인 실패:", error);
-      setIsLoginIdValid(false);
-      setMessage("아이디 중복 확인에 실패했습니다."); // 실패 메시지 설정
+  const validateInput = () => {
+    // 아이디 유효성 검사
+    let idCheck = /^[a-z]+[a-z0-9]{5,19}$/g;
+    if (!idCheck.test(loginId)) {
+      alert("아이디는 영문자로 시작하는 6~20자 영문자 또는 숫자이어야 합니다.");
+      return false;
     }
-  };
 
-  const handleCheckEmail = async () => {
-    try {
-      // 이메일 중복 확인 요청
-      // const response = await axios.post("/api/check-email", { email });
-      // setIsEmailValid(response.data.valid);
-      // 임시로 true로 설정합니다.
-      setIsEmailValid(true);
-      setMessage(""); // 메시지 초기화
-    } catch (error) {
-      console.error("이메일 중복 확인 실패:", error);
-      setIsEmailValid(false);
-      setMessage("이메일 중복 확인에 실패했습니다."); // 실패 메시지 설정
+    // 이메일 입력 확인
+    if (email === "") {
+      alert("이메일을 입력해주세요.");
+      return false;
     }
+
+    // 비밀번호 유효성 검사
+    const pwdCheck = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+    if (!pwdCheck.test(password)) {
+      alert(
+        "비밀번호는 문자, 숫자, 기호를 조합하여 8자리 이상을 입력해주세요."
+      );
+      return false;
+    }
+
+    // 비밀번호 일치 확인
+    if (password !== confirmPassword) {
+      alert("비밀번호가 다릅니다. 다시 입력해주세요.");
+      return false;
+    }
+
+    // 이름 한글 유효성 검사
+    const korean = /^[가-힣]+$/;
+    if (!korean.test(userName)) {
+      alert("이름은 한글만 입력할 수 있습니다.");
+      return false;
+    }
+
+    // 전화번호 유효성 검사
+    const tel = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
+    if (!tel.test(phoneNum)) {
+      alert("전화번호는 11자리로된 숫자로만 입력해주세요.");
+      return false;
+    }
+    return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateInput()) {
+      return;
+    }
+
     try {
       // 회원가입 요청
       await axios.post("/api/signup", {
-        loginId,
+        loginId: `${loginId}@${email}`,
         userName,
         email,
         password,
-        confirmPassword,
+        phoneNum,
       });
       setMessage("회원가입이 완료되었습니다.");
       navigate("/login");
     } catch (error) {
-      console.error("회원가입 실패:", error);
       setMessage("회원가입에 실패했습니다.");
     }
   };
@@ -77,65 +95,39 @@ const LoginAdd = () => {
             />
             <label>회원가입</label>
           </div>
-          <div>
+          <div className="row-container">
             <input
-              className="Add-id"
+              className="login"
               type="text"
               placeholder="아이디"
-              value={loginId}
-              onChange={(e) => setLoginId(e.target.value)}
+              value={userName}
             />
-            <button
-              type="button"
-              className="Add-check"
-              onClick={handleCheckLoginId}
-            >
-              중복 확인
-            </button>
-            {!isLoginIdValid && (
-              <p className="error-message">이미 사용 중인 아이디입니다.</p>
-            )}
-          </div>
-          <div>
+            <span className="at">@</span>
             <input
-              className="Add-email"
-              type="email"
-              placeholder="이메일"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              className="domain"
+              type="text"
+              name="userEmail"
+              placeholder="domain.co.kr"
+              value={userName}
             />
-            <button
-              type="button"
-              className="Add-check"
-              onClick={handleCheckEmail}
-            >
-              중복 확인
-            </button>
-            {!isEmailValid && (
-              <p className="error-message">이미 사용 중인 이메일입니다.</p>
-            )}
           </div>
-          <div>
+          <div className="login-admin">
             <input
-              className="Add-name"
+              className="Add"
               type="text"
               placeholder="이름"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
             />
-          </div>
-          <div>
             <input
-              className="Add-password"
+              className="Add"
               type="password"
               placeholder="비밀번호"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-          </div>
-          <div>
             <input
-              className="Add-passowrdcheck"
+              className="Add"
               type="password"
               placeholder="비밀번호 확인"
               value={confirmPassword}
@@ -146,10 +138,10 @@ const LoginAdd = () => {
             회원가입
           </button>
         </form>
-        <p className="error-message">{message}</p>
+        {message && <div className="message">{message}</div>}
       </div>
     </div>
   );
-};
+}
 
 export default LoginAdd;
