@@ -13,6 +13,7 @@ const CalendarPage = () => {
   const [currentDate, setCurrentDate] = useState(null); //현재 선택된 날짜 상태
   const [memoInput, setMemoInput] = useState(""); //메모 입력 값 상태
   const [showMemo, setShowMemo] = useState(false); //메모입력창을 숨기기 위한 상태 추가
+  const [editMode, setEditMode] = useState(false); // 메모 수정 모드 여부
 
   const backButtonHandler = () => {
     navigate("/mypage");
@@ -28,23 +29,37 @@ const CalendarPage = () => {
   };
 
   const saveMemo = () => {
-    if (currentDate) {
+    if (currentDate && !editMode) {
       const newMemos = [...memos];
       const id = Date.now(); // 고유한 id 생성
       newMemos.push({ id, date: currentDate, memo: memoInput }); //기존메모, 새로운 메모 추가
       setMemos(newMemos);
-      setMemoInput(""); //메모 입력칸 초기화
+      setMemoInput(""); // 메모 입력칸 초기화
+    } else {
+      editMemo();
     }
   };
 
   const memoClickHandle = (memo) => {
-    setMemoInput(memo); //메모 클릭시 메모 입력칸 아래로 표시
+    setMemoInput(memo); // 메모 클릭시 메모 입력칸 아래로 표시
+    setEditMode(true); // 수정 모드 활성화
+  };
+
+  const editMemo = () => {
+    const updatedMemos = memos.map((memo) => {
+      if (memo.date === currentDate) {
+        return { ...memo, memo: memoInput };
+      }
+      return memo;
+    });
+    setMemos(updatedMemos);
+    setMemoInput(""); // 메모 입력칸 초기화
+    setEditMode(false); // 수정 모드 비활성화
   };
 
   const deleteMemo = (id) => {
     const updatedMemos = memos.filter((memo) => memo.id !== id);
     setMemos(updatedMemos);
-    // setShowMemo(false); // 삭제 후 메모 창 닫기
   };
 
   const memosForCurrentDate = memos.filter((memo) => memo.date === currentDate);
@@ -107,7 +122,7 @@ const CalendarPage = () => {
             />
             <div className="ButtonBox">
               <button className="saveButton" onClick={saveMemo}>
-                저장
+                {editMode ? "수정" : "저장"}
               </button>
               <button
                 className="closeButton"
@@ -119,10 +134,18 @@ const CalendarPage = () => {
             {currentDate && (
               <div className="memoListBox">
                 <div className="memoList">메모목록({currentDate})</div>
-                <ul className="">
+
+                <ul className="memo">
                   {memosForCurrentDate.map((memo) => (
                     <li className="memo" key={memo.id}>
                       {memo.memo}
+
+                      <button
+                        className="editMemo"
+                        onClick={() => memoClickHandle(memo.memo)}
+                      >
+                        수정
+                      </button>
                       <button
                         className="deleteMemo"
                         onClick={() => deleteMemo(memo.id)}

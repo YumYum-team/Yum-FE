@@ -119,6 +119,9 @@
   margin: 10px;
   font-size: 17px;
   font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   /* border: 1px solid green; */
 }
 
@@ -126,10 +129,23 @@
   padding: 7px;
 }
 
+.editMemo {
+  font-size: 15px;
+  background-color: #fff0aa;
+  border: solid 1px #996602;
+  border-radius: 5px;
+  margin-left: 30px;
+}
+
+.editMemo,
 .deleteMemo {
   font-size: 15px;
   background-color: #fff0aa;
   border: solid 1px #996602;
   border-radius: 5px;
-  margin-left: 3rem;
+  margin-left: 10px;
+}
+
+.editMemo {
+  margin-left: 2rem;
 }
