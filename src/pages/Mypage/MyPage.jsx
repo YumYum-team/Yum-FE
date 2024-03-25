@@ -10,6 +10,7 @@ import {
   StarFill,
   Calendar,
   BoxArrowRight,
+  ArrowReturnLeft,
 } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import { profile, webLogo } from "../../assets/images";
@@ -19,6 +20,7 @@ const MyPage = () => {
   const [unregisterModal, setUnregisterModal] = useState(false);
   const [email, setEmail] = useState();
   const [userId, setUserId] = useState();
+  const [foundUser, setFoundUser] = useState(null);
   const [invitationSent, setInvitationSent] = useState({});
   const navigate = useNavigate();
 
@@ -28,14 +30,32 @@ const MyPage = () => {
 
   const inviteCloseHandler = () => {
     setInviteModal(false);
+    setUserId("");
+    setFoundUser(null);
   };
 
+  // 사용자 검색 함수
+  const searchUser = () => {
+    // 여기서 사용자 ID를 기반으로 사용자를 검색하는 로직을 구현해야 합니다.
+    // 예를 들어, 입력된 ID를 기반으로 사용자 데이터를 가져오는 API 호출을 할 수 있습니다.
+    // 이 예시에서는 하드코딩된 목록에서 사용자를 찾는 것을 시뮬레이션합니다.
+    const users = [
+      { id: "test1", profileImg: profile },
+      { id: "test2", profileImg: profile },
+    ];
+
+    const user = users.find((user) => user.id === userId);
+    setFoundUser(user);
+  };
+
+  // 초대 버튼 클릭 시 동작
   const inviteHandler = (user) => {
     // 초대하기 버튼을 눌렀을 때 초대 상태를 변경
     setInvitationSent((prevState) => ({
       ...prevState,
       [user]: !prevState[user],
     }));
+    console.log("초대된 사용자:", user);
   };
 
   const editButtonHandler = () => {
@@ -101,37 +121,40 @@ const MyPage = () => {
               <Modal.Title className="inviteTitle">친구 초대하기</Modal.Title>
             </Modal.Header>
             <Modal.Body className="modalBody">
-              <div className="userBox">
-                <span className="userprofile">
-                  <img src={profile} alt="profile" />
-                </span>
-                <span className="searchId"> test1 </span>
-                <Button
-                  className="modalInvite"
-                  onClick={() => inviteHandler("test1")}
-                >
-                  {invitationSent["test1"] ? "취소" : "초대하기"}
-                </Button>
+              {/* 검색된 사용자 표시 */}
+              {foundUser && (
+                <div className="userBox">
+                  <span className="userprofile">
+                    <img src={foundUser.profileImg} alt="프로필" />
+                  </span>
+                  <span className="searchId">{foundUser.id}</span>
+                  <Button
+                    className="modalInvite"
+                    onClick={() => inviteHandler(foundUser.id)}
+                  >
+                    {invitationSent[foundUser.id] ? "취소" : "초대하기"}
+                  </Button>
+                </div>
+              )}
+              {/* 사용자 없는 경우 메시지 표시 */}
+              {!foundUser && userId && (
+                <div className="notFoundMessage">
+                  해당 사용자를 찾을 수 없습니다.
+                </div>
+              )}
+              {/* 검색창 */}
+              <div>
+                <input
+                  className="userIdSearch"
+                  type="text"
+                  placeholder="유저 ID를 입력하세요."
+                  value={userId}
+                  onChange={(e) => setUserId(e.target.value)}
+                />
+                <button className="userIdSearchButton" onClick={searchUser}>
+                  <ArrowReturnLeft />
+                </button>
               </div>
-              <div className="userBox">
-                <span className="userprofile">
-                  <img src={profile} alt="profile" />
-                </span>
-                <span className="searchId"> test2 </span>
-                <Button
-                  className="modalInvite"
-                  onClick={() => inviteHandler("test2")}
-                >
-                  {invitationSent["test2"] ? "취소" : "초대하기"}
-                </Button>
-              </div>
-              <input
-                className="userIdSearch"
-                type="text"
-                placeholder="유저 ID를 입력하세요."
-                value={userId}
-                onChange={(e) => setUserId(e.target.value)}
-              />
             </Modal.Body>
             <Modal.Footer className="inviteFooter">
               <Button className="modalInviteClose" onClick={inviteCloseHandler}>

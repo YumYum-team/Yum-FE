@@ -96,7 +96,17 @@
 .userIdSearch {
   margin: 8px;
   padding: 5px;
-  width: 350px;
+  width: 250px;
+}
+
+.userIdSearchButton {
+  background-color: #fff0aa;
+  border: solid 1px #996602;
+  border-radius: 5px;
+}
+
+.notFoundMessage {
+  margin: 20px;
 }
 
 .inviteFooter {
