@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import "./ChatClient.css";
+// import WebSocketHandler from "./WebSocket";
+import "./ChatMain.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import profileImage from "../../assets/images/profile.png";
 import profileImage2 from "../../assets/images/mainLogo.png";
@@ -7,7 +8,7 @@ import profileImage3 from "../../assets/images/textLogo.png";
 import profileImage4 from "../../assets/images/webLogo.png";
 import profileImage5 from "../../assets/images/profile.png";
 
-const ChatClient = () => {
+const ChatMain = () => {
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState("");
   const [friendList, setFriendList] = useState([]);
@@ -15,12 +16,20 @@ const ChatClient = () => {
   const [searchInput, setSearchInput] = useState("");
   const [chatRooms, setChatRooms] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newRoomName, setNewRoomName] = useState("");
+  const [newRoomId, setNewRoomId] = useState("");
   const [selectedImage, setSelectedImage] = useState(profileImage);
   const [selectedRoomMessages, setSelectedRoomMessages] = useState([]);
   const [roomMessages, setRoomMessages] = useState({});
   const [selectedRoomContent, setSelectedRoomContent] = useState({});
   const [selectedFriends, setSelectedFriends] = useState([]);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editedImage, setEditedImage] = useState("");
+  const [editedName, setEditedName] = useState("");
+  const [profileName, setProfileName] = useState("이름을설정해주세요");
+  const [editedRoomId, setEditedRoomId] = useState("");
+  const [invitedFriends, setInvitedFriends] = useState([]);
+  const [isInvitedFriendsModalOpen, setIsInvitedFriendsModalOpen] =
+    useState(false);
 
   const images = [
     profileImage,
@@ -40,6 +49,44 @@ const ChatClient = () => {
     fileInput.addEventListener("change", handleImageSelect);
     fileInput.click();
   };
+
+  const handleEditModalOpen = () => {
+    setIsEditModalOpen(true);
+  };
+
+  const handleEditModalClose = () => {
+    setIsEditModalOpen(false);
+  };
+
+  const handleSaveChanges = () => {
+    if (editedName.trim() !== "") {
+      setProfileName(editedName);
+    }
+    if (editedImage !== "") {
+      setSelectedImage(editedImage);
+    }
+    if (editedRoomId.trim() !== "") {
+      setEditedRoomId(editedRoomId);
+    }
+    handleEditModalClose();
+  };
+  const openInvitedFriendsModal = () => {
+    setIsInvitedFriendsModalOpen(true);
+  };
+  const closeInvitedFriendsModal = () => {
+    setIsInvitedFriendsModalOpen(false);
+  };
+
+  const handleInviteFriends = () => {
+    const invitedFriendsList = friendList.filter((friend) =>
+      selectedFriends.includes(friend.id)
+    );
+    setInvitedFriends(invitedFriendsList);
+  };
+
+  // useEffect(() => {
+  //   WebSocketHandler.connect();
+  // }, []);
 
   useEffect(() => {
     const mockFriendList = [
@@ -90,7 +137,7 @@ const ChatClient = () => {
     fetchFriendList();
   }, [messages]);
 
-  // 서버에서 FriendList를 가져오는 함수
+  // 서버 FriendList 가져오는
   const fetchFriendList = async () => {
     try {
       const response = await fetch("친구목록api");
@@ -101,6 +148,34 @@ const ChatClient = () => {
       console.error("Error fetching friend list:", error);
     }
   };
+  const handleLeaveRoom = async () => {
+    try {
+      const response = await fetch(`서버 API 엔드포인트/leaveRoom`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // 필요한 헤더 추가
+        },
+        body: JSON.stringify({
+          // 채팅방 식별자 등 필요한 데이터 전송
+          // 예: roomId, userId 등
+        }),
+      });
+
+      if (response.ok) {
+        leaveRoom(selectedRoomContent.name);
+        console.log("Successfully left the room");
+      } else {
+        console.error("Failed to leave the room");
+      }
+    } catch (error) {
+      console.error("Error leaving the room:", error);
+    }
+  };
+
+  const leaveRoom = (roomId) => {
+    setChatRooms((prevRooms) => prevRooms.filter((room) => room !== roomId));
+  };
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -108,22 +183,24 @@ const ChatClient = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setNewRoomName(""); // 모달이 닫힐 때 새로운 방 이름 초기화
+    setNewRoomId("");
     setSelectedImage(null);
   };
 
   const createNewRoom = () => {
-    if (newRoomName.trim() !== "") {
+    if (newRoomId.trim() !== "") {
       const newRoom = {
-        name: newRoomName,
+        name: newRoomId,
         image: selectedImage,
         content: {},
+        invitedFriends: invitedFriends,
       };
       if (selectedImage !== null) {
         newRoom.image = selectedImage;
       }
       setChatRooms((prevRooms) => [...prevRooms, newRoom]);
       closeModal();
+      handleInviteFriends();
     }
   };
 
@@ -138,31 +215,32 @@ const ChatClient = () => {
     }
   };
 
-  const handleRoomClick = (roomName) => {
-    setContentRoom(roomName);
+  const handleRoomClick = (roomId) => {
+    setContentRoom(roomId);
   };
 
-  const setContentRoom = (roomName) => {
-    const room = chatRooms.find((room) => room.name === roomName);
+  const setContentRoom = (roomId) => {
+    const room = chatRooms.find((room) => room.name === roomId);
     if (room) {
-      console.log("Room Image:", room.image);
-      setNewRoomName(room.name);
+      setNewRoomId(room.name);
       setSelectedImage(room.image || null);
       setSelectedRoomContent(room.content || {});
-
-      fetchMessagesForRoom(roomName);
+      setSelectedRoomMessages(roomMessages[roomId] || []);
+      fetchMessagesForRoom(roomId);
+      setProfileName(room.name);
     }
   };
 
-  const fetchMessagesForRoom = async (roomName) => {
+  const fetchMessagesForRoom = async (roomId) => {
     try {
-      const response = await fetch(`서버 API 엔드포인트/${roomName}`);
+      const response = await fetch(`서버 API 엔드포인트/${roomId}`);
       const data = await response.json();
 
       setRoomMessages((prevMessages) => ({
         ...prevMessages,
-        [roomName]: data,
+        [roomId]: data,
       }));
+      setSelectedRoomMessages(data);
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
@@ -172,55 +250,9 @@ const ChatClient = () => {
     if (isModalOpen) {
       closeModal();
     } else {
+      setNewRoomId("");
       openModal();
     }
-  };
-
-  const handleProfileImgClick = () => {
-    // 프로필 이미지 클릭 시 상태 옵션 토글
-    const statusOptions = document.getElementById("status-options");
-    statusOptions.classList.toggle("active");
-  };
-
-  const handleStatusOptionClick = (status) => {
-    // 상태 옵션 클릭 시 해당 상태로 프로필 이미지 업데이트
-    const profileImg = document.getElementById("profile-img");
-    const statusOnline = document.getElementById("status-online");
-    const statusAway = document.getElementById("status-away");
-    const statusBusy = document.getElementById("status-busy");
-    const statusOffline = document.getElementById("status-offline");
-
-    profileImg.className = "";
-
-    statusOnline.classList.remove("active");
-    statusAway.classList.remove("active");
-    statusBusy.classList.remove("active");
-    statusOffline.classList.remove("active");
-
-    const selectedStatus = document.getElementById(
-      `status-${status.toLowerCase()}`
-    );
-    selectedStatus.classList.add("active");
-
-    switch (status) {
-      case "Online":
-        profileImg.classList.add("online");
-        break;
-      case "Away":
-        profileImg.classList.add("away");
-        break;
-      case "Busy":
-        profileImg.classList.add("busy");
-        break;
-      case "Offline":
-        profileImg.classList.add("offline");
-        break;
-      default:
-        break;
-    }
-
-    const statusOptions = document.getElementById("status-options");
-    statusOptions.classList.remove("active");
   };
 
   function newMessage() {
@@ -291,7 +323,7 @@ const ChatClient = () => {
   };
 
   const newGame = (e) => {
-    console.log(123);
+    window.open("https://naver.me/5vBykG4L");
   };
 
   const toggleFriend = (friendId) => {
@@ -307,52 +339,6 @@ const ChatClient = () => {
   return (
     <div id="frame">
       <div id="sidepanel">
-        <div id="profile">
-          <div className="wrap">
-            <img
-              src={profileImage}
-              alt="프로필 이미지"
-              onClick={handleProfileImgClick}
-            />
-            <p>이하름</p>
-            <div id="status-options">
-              <ul>
-                <li
-                  id="status-online"
-                  className="active"
-                  onClick={() => handleStatusOptionClick("Online")}
-                >
-                  <span className="status-circle"></span>
-                  <p>접속중</p>
-                </li>
-                <li
-                  id="status-away"
-                  className="active"
-                  onClick={() => handleStatusOptionClick("Away")}
-                >
-                  <span className="status-circle"></span>
-                  <p>자리비움</p>
-                </li>
-                <li
-                  id="status-busy"
-                  className="active"
-                  onClick={() => handleStatusOptionClick("Busy")}
-                >
-                  <span className="status-circle"></span>
-                  <p>방해금지</p>
-                </li>
-                <li
-                  id="status-offline"
-                  className="active"
-                  onClick={() => handleStatusOptionClick("Offline")}
-                >
-                  <span className="status-circle"></span>
-                  <p>오프라인</p>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
         <p id="listText">내친구목록</p>
         <div id="search">
           <i className="bi bi-search"></i>
@@ -402,6 +388,60 @@ const ChatClient = () => {
           ))}
         </div>
       </div>
+      {isModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <p>채팅방 만들기</p>
+          </div>
+          <div className="modalFriendList">
+            {friendList.map((friend) => (
+              <div key={friend.id} className="modalFriendListItem">
+                <input
+                  type="checkbox"
+                  id={friend.id}
+                  checked={selectedFriends.includes(friend.id)}
+                  onChange={() => toggleFriend(friend.id)}
+                />
+                <label htmlFor={friend.id}>
+                  <img
+                    className="modalFriendImg"
+                    src={friend.profilePicture}
+                    alt={friend.name}
+                  />
+                  {friend.name} : {friend.email}
+                </label>
+              </div>
+            ))}
+          </div>
+          <div>
+            <div className="image-selection">
+              {images.slice(0, 5).map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt={`Image ${index}`}
+                  className={selectedImage === image ? "selected" : ""}
+                  onClick={() => handleImageClick(image)}
+                />
+              ))}
+              <button
+                className="file-select-btn"
+                onClick={handleFileSelectClick}
+              >
+                +
+              </button>
+            </div>
+          </div>
+          <input
+            type="text"
+            placeholder="채팅방 이름을 입력하세요."
+            value={newRoomId}
+            onChange={(e) => setNewRoomId(e.target.value)}
+          />
+          <button onClick={createNewRoom}>확인</button>
+          <button onClick={closeModal}>닫기</button>
+        </div>
+      )}
 
       <div className="content">
         <div className="contact-profile">
@@ -410,73 +450,84 @@ const ChatClient = () => {
             src={selectedImage || profileImage}
             alt="프로필 이미지"
           />
-          <p className="contentName">{newRoomName || ""}</p>
-          <i
-            className="bi bi-pencil-square"
-            onClick={handleRoomCreateBtnClick}
-          ></i>
+          <p className="contentName">{editedName || ""}</p>
+          <i className="bi bi-pencil-square" onClick={handleEditModalOpen}></i>
           <div className="chatSetting">
             <i className="bi bi-person-plus-fill"></i>
-            <i className="bi bi-person-lines-fill"></i>
+            <i
+              onClick={openInvitedFriendsModal}
+              className="bi bi-person-lines-fill"
+            ></i>
+
+            {isInvitedFriendsModalOpen && (
+              <div className="modal">
+                <div className="mpdal-content">
+                  <p className="listP">채팅방 친구 목록</p>
+                </div>
+                <div className="modalFriendList2">
+                  <label>
+                    {invitedFriends.map((friend) => (
+                      <label key={friend.id}>
+                        <img src={friend.profilePicture} alt={friend.name} />
+                        <div className="friend-info-label">
+                          <span className="friend-name">{friend.name}</span>
+                          <span className="friend-email">{friend.email}</span>
+                        </div>
+                      </label>
+                    ))}
+                  </label>
+                </div>
+                <button
+                  className="roomListBtn"
+                  onClick={closeInvitedFriendsModal}
+                >
+                  닫 기
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
-        {isModalOpen && (
+        {isEditModalOpen && (
           <div className="modal">
             <div className="modal-content">
-              <p>채팅방 만들기</p>
+              <p>채팅방 정보 변경</p>
             </div>
-            <div>
-              {friendList.map((friend) => (
-                <div key={friend.id}>
-                  <input
-                    type="checkbox"
-                    id={friend.id}
-                    checked={selectedFriends.includes(friend.id)}
-                    onChange={() => toggleFriend(friend.id)}
-                  />
-                  <label htmlFor={friend.id}>
-                    <img
-                      className="modalFriendImg"
-                      src={friend.profilePicture}
-                      alt={friend.name}
-                    />
-
-                    {friend.name}
-                    <br />
-                    {friend.email}
-                  </label>
-                </div>
+            <div className="modal-img">
+              <img
+                className="modal-img2"
+                src={selectedImage}
+                alt="프로필 이미지"
+              />
+            </div>
+            <div className="image-selection">
+              {images.slice(0, 5).map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt={`Image ${index}`}
+                  className={selectedImage === image ? "selected" : ""}
+                  onClick={() => handleImageClick(image)}
+                />
               ))}
+              <button
+                className="file-select-btn"
+                onClick={handleFileSelectClick}
+              >
+                +
+              </button>
             </div>
-            <div>
-              <div className="image-selection">
-                {images.slice(0, 5).map((image, index) => (
-                  <img
-                    key={index}
-                    src={image}
-                    alt={`Image ${index}`}
-                    className={selectedImage === image ? "selected" : ""}
-                    onClick={() => handleImageClick(image)}
-                  />
-                ))}
-                <button
-                  className="file-select-btn"
-                  onClick={handleFileSelectClick}
-                >
-                  +
-                </button>
-              </div>
-            </div>
-
             <input
               type="text"
-              placeholder="채팅방 이름을 입력하세요."
-              value={newRoomName}
-              onChange={(e) => setNewRoomName(e.target.value)}
+              placeholder="변경 할 채팅방이름을 입력하세요"
+              value={editedName}
+              onChange={(e) => setEditedName(e.target.value)}
             />
-            <button onClick={createNewRoom}>확인</button>
-            <button onClick={closeModal}>닫기</button>
+            <div>
+              <button onClick={handleSaveChanges}>저장</button>
+              <button onClick={handleEditModalClose}>닫기</button>
+            </div>
+            <button onClick={handleLeaveRoom}>채팅방 나가기</button>
           </div>
         )}
 
@@ -513,4 +564,4 @@ const ChatClient = () => {
     </div>
   );
 };
-export default ChatClient;
+export default ChatMain;
