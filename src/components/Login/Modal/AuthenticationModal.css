@@ -1,15 +1,23 @@
 @charset "UTF-8";
 
+.modal {
+  width: 80em;
+  height: 80rem;
+}
+.modal-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 .content {
   display: grid;
-  place-items: center;
+  align-items: center;
   width: 100%;
-  height: 100vh;
 }
 
 .card {
-  width: 120rem;
-  height: 49rem;
   background-color: #fff;
   border-radius: 0.5rem;
   margin: 0 auto;
@@ -18,23 +26,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.card .business-logo {
-  display: block;
-  align-self: flex-start;
-  width: 18.5rem;
-  height: 2.5rem;
-  /*background: url("../images/business-logo-co/lor.png") no-repeat center / contain;*/
-  color: transparent;
-}
-
-.card .title {
-  align-self: flex-start;
-  margin-top: 3rem;
-  font-size: 2.4rem;
-  font-weight: 600;
-  color: #006ab7;
 }
 
 .card .form-container {
@@ -49,7 +40,6 @@
   flex-direction: column;
   justify-content: space-between;
   width: 42.6rem;
-  height: 100%;
   margin-right: 11rem;
 }
 
@@ -107,7 +97,6 @@
   .join-illustration {
   width: 16rem;
   height: 12.7rem;
-  /*background: url("../images/security_img.png") no-repeat center / contain;*/
 }
 
 .card .form-container .right-container .illustration-section span {
@@ -126,18 +115,18 @@
   height: 4rem;
 }
 
-.card .button-section .text-button {
+.card .button-section .before-button {
   background-color: transparent;
   color: #777d89;
   font-size: 1.4rem;
   font-weight: 400;
 }
 
-.card .button-section .text-button:hover {
+.card .button-section .before-button:hover {
   color: #008ff6;
 }
 
-.card .button-section .plain-button {
+.card .button-section .next-button {
   width: 9.6rem;
   height: 4rem;
   background-color: #008ff6;

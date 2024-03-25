@@ -1,19 +1,21 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LoginAdd.css";
-import axios from "axios";
 import { leftArrow } from "../../assets/images";
+import AuthenticationModal from "./Modal/AuthenticationModal";
 
 function LoginAdd() {
   const navigate = useNavigate();
 
   const [loginId, setLoginId] = useState("");
   const [email, setEmail] = useState("");
-  const [userName, setUserName] = useState("");
+  const [memberName, setMemberName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [phoneNum, setPhoneNum] = useState("");
   const [message, setMessage] = useState("");
+
+  const [showModal, setShowModal] = useState();
 
   const validateInput = () => {
     // 아이디 유효성 검사
@@ -46,7 +48,7 @@ function LoginAdd() {
 
     // 이름 한글 유효성 검사
     const korean = /^[가-힣]+$/;
-    if (!korean.test(userName)) {
+    if (!korean.test(memberName)) {
       alert("이름은 한글만 입력할 수 있습니다.");
       return false;
     }
@@ -60,32 +62,42 @@ function LoginAdd() {
     return true;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateInput()) {
-      return;
+  const requestSignUp = async (formData) => {
+    const response = await fetch("http://localhost:8080/auth/join", {
+      method: "POST",
+      body: formData,
+    });
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
     }
+    return response;
+  };
+
+  const initSignUpList = async (event) => {
+    event.preventDefault();
+    if (!validateInput()) return;
+
+    const fullEmail = `${loginId}@${email}`;
+    const formData = new FormData();
+
+    formData.append("loginId", fullEmail);
+    formData.append("email", email);
+    formData.append("memberName", memberName);
+    formData.append("password", password);
+    formData.append("phoneNum", phoneNum);
 
     try {
-      // 회원가입 요청
-      await axios.post("/api/signup", {
-        loginId: `${loginId}@${email}`,
-        userName,
-        email,
-        password,
-        phoneNum,
-      });
-      setMessage("회원가입이 완료되었습니다.");
-      navigate("/login");
+      await requestSignUp(formData);
     } catch (error) {
-      setMessage("회원가입에 실패했습니다.");
+      alert("서버간의 통신오류로 인해 다시시도 해 주세요");
     }
+    setShowModal(true);
   };
 
   return (
     <div className="container">
       <div className="Add-box">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={initSignUpList}>
           <div className="add-h1">
             <img
               src={leftArrow}
@@ -100,7 +112,8 @@ function LoginAdd() {
               className="login"
               type="text"
               placeholder="아이디"
-              value={userName}
+              value={loginId}
+              onChange={(e) => setLoginId(e.target.value)}
             />
             <span className="at">@</span>
             <input
@@ -108,7 +121,8 @@ function LoginAdd() {
               type="text"
               name="userEmail"
               placeholder="domain.co.kr"
-              value={userName}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="login-admin">
@@ -116,8 +130,8 @@ function LoginAdd() {
               className="Add"
               type="text"
               placeholder="이름"
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
+              value={memberName}
+              onChange={(e) => setMemberName(e.target.value)}
             />
             <input
               className="Add"
@@ -133,12 +147,26 @@ function LoginAdd() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
+            <input
+              className="Add"
+              type="text"
+              placeholder="전화번호 입력"
+              pwd
+              value={phoneNum}
+              onChange={(e) => setPhoneNum(e.target.value)}
+            />
           </div>
           <button type="submit" className="Add-up">
             회원가입
           </button>
         </form>
         {message && <div className="message">{message}</div>}
+        {showModal && (
+          <AuthenticationModal
+            loginId={`${loginId}@${email}`}
+            onClose={() => setShowModal(false)}
+          />
+        )}
       </div>
     </div>
   );

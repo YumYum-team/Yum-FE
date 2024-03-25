@@ -2,54 +2,30 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LoginPage.css";
 import { Logo, google, kakao, naver } from "../../assets/images";
-import JSEncrypt from "jsencrypt";
 
 function LoginPage() {
   const navigate = useNavigate();
-  const [id, setId] = useState("");
+  const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
   const [idValid, setIdValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
   const [notNext, setNotNext] = useState(false);
-  const [publicKey, setPublicKey] = useState("");
 
   const REST_API_KEY = "24f02abbba4b1f9eb550023d7b47a31d";
   const REDIRECT_URI = "http://localhost:3000/kakao/callback";
   const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
-  useEffect(() => {
-    const fetchPublicKey = async () => {
-      try {
-        const response = await fetch("/auth/public-key", { method: "GET" });
-        const key = await response.text();
-        setPublicKey(key);
-      } catch (error) {
-        console.error("Could not fetch public key", error);
-      }
-    };
-    fetchPublicKey();
-  }, []);
-
-  const encryptWithPublicKey = (text) => {
-    if (!publicKey) return "";
-    const encrypt = new JSEncrypt();
-    encrypt.setPublicKey(publicKey);
-    return encrypt.encrypt(text);
-  };
-
   const loginHandler = async () => {
-    const encryptedId = encryptWithPublicKey(id);
-    const encryptedPassword = encryptWithPublicKey(password);
     const formData = new FormData();
-    formData.append("loginId", encryptedId);
-    formData.append("password", encryptedPassword);
+    formData.append("loginId", loginId);
+    formData.append("password", password);
     try {
-      const response = await fetch("/auth/login", {
+      const response = await fetch("http://localhost:8080/auth/login", {
         method: "POST",
         body: formData,
       });
       if (!response.ok) throw new Error("Login failed");
-      navigate("/organization-list");
+      navigate("/");
     } catch (error) {
       alert("로그인 정보를 다시 확인해 주세요.");
     }
@@ -74,15 +50,15 @@ function LoginPage() {
             className="login-id"
             type="text"
             placeholder="아이디"
-            value={id}
-            onChange={(value) => setId(value)}
+            value={loginId}
+            onChange={(e) => setLoginId(e.target.value)}
           />
           <input
             className="login-id"
             type="password"
             placeholder="비밀번호"
             value={password}
-            onChange={(value) => setPassword(value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
 
           <button className="loginSumbit" onClick={loginHandler}>

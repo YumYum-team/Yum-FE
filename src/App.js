@@ -10,7 +10,6 @@ import LoginAdd from "./components/Login/LoginAdd";
 import FoundId from "./components/Login/FoundId";
 import FoundPassword from "./components/Login/FoundPassword";
 import ChangePassword from "./components/Login/ChangePassword";
-import Email from "./components/Login/Email";
 import Redirection from "./components/Login/Redirection";
 
 const router = createBrowserRouter([
@@ -29,7 +28,6 @@ const router = createBrowserRouter([
   { path: "foundId", element: <FoundId /> },
   { path: "foundPassword", element: <FoundPassword /> },
   { path: "changePassword", element: <ChangePassword /> },
-  { path: "email", element: <Email /> },
   { path: "/kakao/callback", element: <Redirection /> },
 ]);
 
