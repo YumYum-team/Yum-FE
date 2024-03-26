@@ -14,6 +14,7 @@ const CalendarPage = () => {
   const [memoInput, setMemoInput] = useState(""); //메모 입력 값 상태
   const [showMemo, setShowMemo] = useState(false); //메모입력창을 숨기기 위한 상태 추가
   const [editMode, setEditMode] = useState(false); // 메모 수정 모드 여부
+  const [selectedMemoId, setSelectedMemoId] = useState(null); // 선택된 메모의 ID 상태 추가
 
   const backButtonHandler = () => {
     navigate("/mypage");
@@ -41,20 +42,26 @@ const CalendarPage = () => {
   };
 
   const memoClickHandle = (memo) => {
+    const clickedMemo = memos.find((m) => m.memo === memo);
+    setSelectedMemoId(clickedMemo.id); // 클릭된 메모의 ID를 저장
     setMemoInput(memo); // 메모 클릭시 메모 입력칸 아래로 표시
     setEditMode(true); // 수정 모드 활성화
   };
 
   const editMemo = () => {
-    const updatedMemos = memos.map((memo) => {
-      if (memo.date === currentDate) {
-        return { ...memo, memo: memoInput };
-      }
-      return memo;
-    });
-    setMemos(updatedMemos);
-    setMemoInput(""); // 메모 입력칸 초기화
-    setEditMode(false); // 수정 모드 비활성화
+    if (currentDate && memoInput) {
+      // 현재 날짜와 메모 입력 값이 있는 경우에만 실행
+      const updatedMemos = memos.map((memo) => {
+        if (memo.date === currentDate && memo.id === selectedMemoId) {
+          // 현재 날짜와 메모의 날짜가 일치하고 선택한 메모의 ID와 일치하는 경우에만 수정
+          return { ...memo, memo: memoInput };
+        }
+        return memo;
+      });
+      setMemos(updatedMemos);
+      setMemoInput(""); // 메모 입력칸 초기화
+      setEditMode(false); // 수정 모드 비활성화
+    }
   };
 
   const deleteMemo = (id) => {
@@ -84,9 +91,6 @@ const CalendarPage = () => {
                 backgroundColor: "transparent",
                 borderColor: "transparent",
               }))}
-              eventClick={(arg) =>
-                memoClickHandle(arg.event.extendedProps.memo)
-              }
               dayCellContent={(arg) => {
                 const content = document.createElement("div");
                 content.textContent = arg.dayNumberText;
