@@ -5,6 +5,9 @@ import HeaderLayout from "./pages/HeaderLayout";
 import MapPage from "./pages/Mainpage/MapPage";
 import Chatpage from "./pages/Chatting/ChatPage";
 import MyPage from "./pages/Mypage/MyPage";
+import EditPage from "./pages/Mypage/EditPage";
+import FavoritesPage from "./pages/Mypage/FavoritesPage";
+import CalendarPage from "./pages/Mypage/CalendarPage";
 import LoginPage from "./components/Login/LoginPage";
 import LoginAdd from "./components/Login/LoginAdd";
 import FoundId from "./components/Login/FoundId";
@@ -21,6 +24,9 @@ const router = createBrowserRouter([
 
       { path: "chat", element: <Chatpage /> },
       { path: "mypage", element: <MyPage /> },
+      { path: "edit", element: <EditPage /> },
+      { path: "favorite", element: <FavoritesPage /> },
+      { path: "calendar", element: <CalendarPage /> },
     ],
   },
   { path: "login", element: <LoginPage /> },
