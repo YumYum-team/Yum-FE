@@ -7,6 +7,10 @@ import Chatpage from "./pages/Chatting/ChatPage";
 import MyPage from "./pages/Mypage/MyPage";
 import LoginPage from "./components/Login/LoginPage";
 import LoginAdd from "./components/Login/LoginAdd";
+import FoundId from "./components/Login/FoundId";
+import FoundPassword from "./components/Login/FoundPassword";
+import ChangePassword from "./components/Login/ChangePassword";
+import Redirection from "./components/Login/Redirection";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +25,10 @@ const router = createBrowserRouter([
   },
   { path: "login", element: <LoginPage /> },
   { path: "loginAdd", element: <LoginAdd /> },
+  { path: "foundId", element: <FoundId /> },
+  { path: "foundPassword", element: <FoundPassword /> },
+  { path: "changePassword", element: <ChangePassword /> },
+  { path: "/kakao/callback", element: <Redirection /> },
 ]);
 
 function App() {
