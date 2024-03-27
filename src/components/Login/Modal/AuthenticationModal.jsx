@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AuthenticationModal.css";
 import Modal from "../../UI/Modal";
@@ -12,7 +12,7 @@ function AuthenticationModal({ onClose, loginId }) {
     event.preventDefault();
 
     const formData = new FormData();
-    formData.append("authNum", authNum);
+    formData.append("authCode", authNum);
     formData.append("loginId", loginId);
 
     try {
