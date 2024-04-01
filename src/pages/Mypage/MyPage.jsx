@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./MyPage.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-bootstrap";
@@ -19,10 +19,98 @@ const MyPage = () => {
   const [inviteModal, setInviteModal] = useState(false);
   const [unregisterModal, setUnregisterModal] = useState(false);
   const [email, setEmail] = useState();
+  const [profileImage, setProfileImage] = useState("");
   const [userId, setUserId] = useState();
   const [foundUser, setFoundUser] = useState(null);
   const [invitationSent, setInvitationSent] = useState({});
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(
+          "http://138.2.122.249:8080/v1/api/myInfo",
+          {
+            method: "POST",
+          }
+        );
+        if (response.ok) {
+          const userData = await response.json();
+          setEmail(userData.email);
+          setProfileImage(userData.profileImage);
+        } else {
+          throw new Error("사용자 데이터를 가져오는 데 실패했습니다.");
+        }
+      } catch (error) {
+        console.error("사용자 데이터를 가져오는 중 오류 발생:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  const searchUser = async () => {
+    try {
+      const response = await fetch(
+        "http://138.2.122.249:8080/v1/api/userIdSearch",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId }),
+        }
+      );
+      if (response.ok) {
+        const userData = await response.json();
+        setFoundUser(userData);
+      } else {
+        setFoundUser(null);
+      }
+    } catch (error) {
+      console.error("사용자 정보를 찾을 수 없습니다:", error);
+      setFoundUser(null);
+    }
+  };
+
+  const unregisterHandler = async () => {
+    try {
+      const response = await fetch(
+        "http://138.2.122.249:8080/v1/api/deleteUser",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          // 필요시 백엔드에서 요구하는 인증 토큰이나 자격 증명을 여기에 포함해야 할 수 있습니다.
+        }
+      );
+
+      if (response.ok) {
+        navigate("/");
+      } else {
+        throw new Error("사용자 탈퇴에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("사용자 탈퇴 중 오류 발생:", error);
+    }
+  };
+
+  const logoutButtonHandler = async () => {
+    try {
+      const response = await fetch("http://138.2.122.249:8080/auth/logout", {
+        method: "GET",
+      });
+
+      if (response.ok) {
+        navigate("/");
+      } else {
+        throw new Error("사용자 로그아웃에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("사용자 로그아웃 중 오류 발생:", error);
+    }
+  };
 
   const inviteModalhHandler = () => {
     setInviteModal(true);
@@ -32,20 +120,6 @@ const MyPage = () => {
     setInviteModal(false);
     setUserId("");
     setFoundUser(null);
-  };
-
-  // 사용자 검색 함수
-  const searchUser = () => {
-    // 여기서 사용자 ID를 기반으로 사용자를 검색하는 로직을 구현해야 합니다.
-    // 예를 들어, 입력된 ID를 기반으로 사용자 데이터를 가져오는 API 호출을 할 수 있습니다.
-    // 이 예시에서는 하드코딩된 목록에서 사용자를 찾는 것을 시뮬레이션합니다.
-    const users = [
-      { id: "test1", profileImg: profile },
-      { id: "test2", profileImg: profile },
-    ];
-
-    const user = users.find((user) => user.id === userId);
-    setFoundUser(user);
   };
 
   // 초대 버튼 클릭 시 동작
@@ -74,10 +148,6 @@ const MyPage = () => {
     navigate("/calendar");
   };
 
-  const logoutButtonHandler = () => {
-    navigate("/");
-  };
-
   const unregisterModalhHandler = () => {
     setUnregisterModal(true);
   };
@@ -86,18 +156,22 @@ const MyPage = () => {
     setUnregisterModal(false);
   };
 
-  const unregisterHandler = () => {
-    navigate("/");
-    //네 버튼 선택시 메인페이지로 이동
+  const handleInputKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      searchUser();
+    }
   };
 
   return (
     <div className="myPage-box">
       <div className="left-section">
         <div className="profile-photo">
+          {/* <img src={profileImage} alt="profile" /> */}
+          {/* <div className="email">{email}</div> */}
           <img src={profile} alt="profile" />
         </div>
-        <div className="email">{email}test2580@naver.com</div>
+        <div className="email">test2580@naver.com</div>
         <button className="info-edit" onClick={editButtonHandler}>
           내정보수정
         </button>
@@ -125,9 +199,9 @@ const MyPage = () => {
               {foundUser && (
                 <div className="userBox">
                   <span className="userprofile">
-                    <img src={foundUser.profileImg} alt="프로필" />
+                    <img src={foundUser.profileImage} alt="프로필" />
                   </span>
-                  <span className="searchId">{foundUser.id}</span>
+                  <span className="searchId">{foundUser.userId}</span>
                   <Button
                     className="modalInvite"
                     onClick={() => inviteHandler(foundUser.id)}
@@ -150,6 +224,7 @@ const MyPage = () => {
                   placeholder="유저 ID를 입력하세요."
                   value={userId}
                   onChange={(e) => setUserId(e.target.value)}
+                  onKeyDown={handleInputKeyDown}
                 />
                 <button className="userIdSearchButton" onClick={searchUser}>
                   <ArrowReturnLeft />

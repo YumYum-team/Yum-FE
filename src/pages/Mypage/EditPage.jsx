@@ -25,8 +25,8 @@ const EditPage = () => {
 
   const fetchUserInfo = async () => {
     try {
-      const response = await fetch("/api/user/profile", {
-        method: "GET",
+      const response = await fetch("http://138.2.122.249:8080/v1/api/myInfo", {
+        method: "POST",
       });
       if (response.ok) {
         const data = await response.json();
@@ -95,7 +95,7 @@ const EditPage = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (userInfo.password !== userInfo.passwordConfirm) {
       alert("비밀번호가 일치하지 않습니다. 다시 확인해주세요");
       setUserInfo({
@@ -124,8 +124,29 @@ const EditPage = () => {
       setPasswordMatchError("");
       return;
     }
-    alert("비밀번호가 변경되었습니다.");
-    navigate("/");
+
+    try {
+      const response = await fetch(
+        "http://138.2.122.249:8080/v1/api/updatePassword",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            password: userInfo.password,
+          }),
+        }
+      );
+      if (response.ok) {
+        alert("비밀번호가 변경되었습니다.");
+        navigate("/");
+      } else {
+        console.error("비밀번호 변경 실패");
+      }
+    } catch (error) {
+      console.error("비밀번호 변경 실패:", error);
+    }
   };
 
   return (
