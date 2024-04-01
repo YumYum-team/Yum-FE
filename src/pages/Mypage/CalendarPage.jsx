@@ -15,10 +15,32 @@ const CalendarPage = () => {
   const [showMemo, setShowMemo] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [selectedMemoId, setSelectedMemoId] = useState(null);
+  const [fetchState, setFetchState] = useState({ accessToken: null });
 
   useEffect(() => {
-    // 유저 정보 불러오기
-    fetchUserInfo();
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(
+          "http://138.2.122.249:8080/v1/api/myInfo",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${fetchState.accessToken}`,
+            },
+          }
+        );
+        if (response.ok) {
+          const userData = await response.json();
+        } else {
+          throw new Error("사용자 데이터를 가져오는 데 실패했습니다.");
+        }
+      } catch (error) {
+        console.error("사용자 데이터를 가져오는 중 오류 발생:", error);
+      }
+    };
+
+    fetchUserData();
   }, []);
 
   const backButtonHandler = () => {

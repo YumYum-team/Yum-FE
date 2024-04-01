@@ -24,6 +24,7 @@ const MyPage = () => {
   const [foundUser, setFoundUser] = useState(null);
   const [invitationSent, setInvitationSent] = useState({});
   const navigate = useNavigate();
+  const [fetchState, setFetchState] = useState({ accessToken: null });
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -32,6 +33,10 @@ const MyPage = () => {
           "http://138.2.122.249:8080/v1/api/myInfo",
           {
             method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${fetchState.accessToken}`,
+            },
           }
         );
         if (response.ok) {
