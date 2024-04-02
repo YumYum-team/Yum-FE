@@ -34,6 +34,13 @@ const EditPage = () => {
         );
         if (response.ok) {
           const userData = await response.json();
+          setUserInfo({
+            email: userData.email,
+            id: userData.id,
+            phoneNumber: userData.phoneNumber,
+            name: userData.name,
+            profileImage: userData.profileImage,
+          });
         } else {
           throw new Error("사용자 데이터를 가져오는 데 실패했습니다.");
         }

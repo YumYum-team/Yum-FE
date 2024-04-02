@@ -86,8 +86,11 @@ const MyPage = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${fetchState.accessToken}`,
           },
-          // 필요시 백엔드에서 요구하는 인증 토큰이나 자격 증명을 여기에 포함해야 할 수 있습니다.
+          body: JSON.stringify({
+            userId: userId,
+          }),
         }
       );
 
@@ -105,6 +108,9 @@ const MyPage = () => {
     try {
       const response = await fetch("http://138.2.122.249:8080/auth/logout", {
         method: "GET",
+        headers: {
+          Authorization: `Bearer ${fetchState.accessToken}`,
+        },
       });
 
       if (response.ok) {
