@@ -700,6 +700,10 @@
   align-items: center;
   justify-content: space-between;
 }
+.modalFriendContainer img {
+  width: 35px;
+  height: 35px;
+}
 .modalFriendInfo {
   margin: 0;
   display: flex;

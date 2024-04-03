@@ -8,6 +8,9 @@ import profileImage3 from "../../assets/images/textLogo.png";
 import profileImage4 from "../../assets/images/webLogo.png";
 import profileImage5 from "../../assets/images/profile2.png";
 
+const serverURL = "http://138.2.122.249:8080";
+const currentUserId = "사용자ID";
+
 const ChatMain = () => {
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState("");
@@ -26,7 +29,6 @@ const ChatMain = () => {
   const [selectedRoomContent, setSelectedRoomContent] = useState({});
   const [selectedFriends, setSelectedFriends] = useState([]);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editedImage, setEditedImage] = useState("");
   const [editedName, setEditedName] = useState("");
   const [profileName, setProfileName] = useState("이름을설정해주세요");
   const [editedTitle, setEditedTitle] = useState("");
@@ -76,18 +78,33 @@ const ChatMain = () => {
     setIsInviteFriendsModalOpen(false);
   };
 
-  const handleSaveChanges = () => {
-    if (editedName.trim() !== "") {
-      setProfileName(editedName);
+  const handleSaveChanges = async () => {
+    try {
+      const response = await fetch(
+        `${serverURL}/api/chatroom/${selectedRoomContent.chatroomId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: editedName.trim() !== "" ? editedName : profileName,
+            image: selectedImage,
+            title: editedTitle.trim() !== "" ? editedTitle : profileName,
+          }),
+        }
+      );
+      if (response.ok) {
+        console.log("채팅방 정보변경 성공");
+        handleEditModalClose();
+      } else {
+        console.error("채팅방 정보변경 실패");
+      }
+    } catch (error) {
+      console.error("에러", error);
     }
-    if (editedImage !== "") {
-      setSelectedImage(editedImage);
-    }
-    if (editedTitle.trim() !== "") {
-      setEditedTitle(editedTitle);
-    }
-    handleEditModalClose();
   };
+
   const openInvitedFriendsModal = () => {
     setIsInvitedFriendsModalOpen(true);
   };
@@ -96,7 +113,7 @@ const ChatMain = () => {
   };
 
   const handleInviteFriends = () => {
-    const invitedFriendsList = MyFriendList.filter((friend) =>
+    const invitedFriendsList = MyFilteredFriends.filter((friend) =>
       selectedFriends.includes(friend.memberId)
     );
     setInvitedFriends(invitedFriendsList);
@@ -107,142 +124,127 @@ const ChatMain = () => {
   // }, []);
 
   useEffect(() => {
-    const mockFriendList = [
-      {
-        memberId: 1,
-        name: "John Doe",
-        email: "john@example.com",
-        profilePicture: profileImage,
-      },
-      {
-        memberId: 2,
-        name: "Jane Doe",
-        email: "jane@example.com",
-        profilePicture: profileImage,
-      },
-      {
-        memberId: 3,
-        name: "Doe",
-        email: "jn@example.com",
-        profilePicture: profileImage,
-      },
-      {
-        memberId: 4,
-        name: "Jane",
-        email: "ja@example.com",
-        profilePicture: profileImage,
-      },
-      {
-        memberId: 5,
-        name: "De",
-        email: "j@example.com",
-        profilePicture: profileImage,
-      },
-      {
-        memberId: 6,
-        name: "Jae",
-        email: "j@example.com",
-        profilePicture: profileImage,
-      },
-    ];
-    setFriendList(mockFriendList);
-    setFilteredFriends(mockFriendList);
-  }, []);
-
-  useEffect(() => {
-    const mockMyFriend = [
-      {
-        memberId: 7,
-        name: "가나다",
-        email: "ㄱㄴㄷ@example.com",
-        profilePicture: profileImage,
-      },
-      {
-        memberId: 8,
-        name: "마바사",
-        email: "ㅁㅂㅅ@example.com",
-        profilePicture: profileImage,
-      },
-      {
-        memberId: 9,
-        name: "아자차",
-        email: "ㅇㅈㅊ@example.com",
-        profilePicture: profileImage,
-      },
-      {
-        memberId: 15,
-        name: "아아",
-        email: "ㄱㄴㄷ@example.com",
-        profilePicture: profileImage,
-      },
-      {
-        memberId: 33,
-        name: "하핳하",
-        email: "ㅁㅂㅅ@example.com",
-        profilePicture: profileImage,
-      },
-      {
-        memberId: 27,
-        name: "다다",
-        email: "ㅇㅈㅊ@example.com",
-        profilePicture: profileImage,
-      },
-      {
-        memberId: 23,
-        name: "하핳하",
-        email: "ㅁㅂㅅ@example.com",
-        profilePicture: profileImage,
-      },
-      {
-        memberId: 55,
-        name: "다다ㄷ다ㅏ",
-        email: "ㅇㅈㅊ@example.com",
-        profilePicture: profileImage,
-      },
-    ];
-    setMyFriendList(mockMyFriend);
-    setMyFilteredFriends(mockMyFriend);
-  }, []);
-
-  useEffect(() => {
     const messagesContainer = document.querySelector(".messages");
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
     fetchFriendList();
+    fetchMyFriendList();
   }, [messages]);
 
-  // 서버 FriendList 가져오는
   const fetchFriendList = async () => {
     try {
-      const response = await fetch("친구목록api");
+      const response = await fetch(`${serverURL}/api/members`);
       const data = await response.json();
-      setFriendList(data);
-      setFilteredFriends(data);
+
+      const formattedData = data.map((member) => ({
+        memberId: member.id,
+        name: member.memberName,
+        email: member.loginId,
+        profilePicture: profileImage2,
+        // profilePicture: `${serverURL}/api/members/${member.id}/profile-picture`,
+      }));
+      setFriendList(formattedData);
+      setFilteredFriends(formattedData);
     } catch (error) {
       console.error("Error fetching friend list:", error);
     }
   };
-  const handleLeaveRoom = async () => {
+
+  const fetchMyFriendList = async () => {
     try {
-      const response = await fetch(`서버 API 엔드포인트/leaveRoom`, {
+      const response = await fetch(`${serverURL}/api/${currentUserId}/friends`);
+      const data = await response.json();
+
+      const formattedData = data.map((friend) => ({
+        memberId: friend.id,
+        name: friend.memberName,
+        email: friend.loginId,
+        profilePicture: profileImage2,
+      }));
+      setMyFriendList(formattedData);
+      setMyFilteredFriends(formattedData);
+    } catch (error) {
+      console.log("Error fetching my friend list:", error);
+    }
+  };
+
+  const addFriend = async (memberId) => {
+    try {
+      const response = await fetch(`${serverURL}/api/${memberId}/friend`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // 필요한 헤더 추가
         },
         body: JSON.stringify({
-          // 채팅방 식별자 등 필요한 데이터 전송
-          // 예: roomId, userId 등
+          userId: currentUserId,
         }),
+      });
+      if (response.ok) {
+        console.log("친구 추가 성공");
+        fetchMyFriendList();
+      } else {
+        console.error("친구 추가 실패");
+      }
+    } catch (error) {
+      console.error("친구 추가 오류:", error);
+    }
+  };
+
+  const handleRemoveFriend = async (memberId) => {
+    try {
+      const response = await fetch(`${serverURL}/api/${memberId}/friend`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        userId: currentUserId,
       });
 
       if (response.ok) {
-        leaveRoom(selectedRoomContent.name);
-        console.log("Successfully left the room");
+        console.log("친구가 성공적으로 삭제되었습니다.");
+        fetchMyFriendList();
       } else {
-        console.error("Failed to leave the room");
+        console.error("친구 삭제 실패");
       }
     } catch (error) {
-      console.error("Error leaving the room:", error);
+      console.error("친구 삭제 중 오류 발생:", error);
+    }
+  };
+
+  const fetchRoomMembers = async (chatroomId) => {
+    try {
+      const response = await fetch(
+        `${serverURL}/api/chatroom/${chatroomId}/members`
+      );
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("에러", error);
+      return null;
+    }
+  };
+
+  const handleLeaveRoom = async () => {
+    try {
+      const requestBody = {
+        memberId: currentUserId,
+        chatroomId: selectedRoomContent.chatroomId,
+      };
+
+      const response = await fetch(`${serverURL}/api/chatroom`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+      if (response.ok) {
+        leaveRoom(selectedRoomContent.name);
+        console.log("채팅방 나가기 성공");
+      } else {
+        console.error("채팅방 나가기 실패");
+      }
+    } catch (error) {
+      console.error("에러", error);
     }
   };
 
@@ -268,20 +270,51 @@ const ChatMain = () => {
     setSelectedImage(null);
   };
 
-  const createNewRoom = () => {
+  const fetchChatRoomInfo = async () => {
+    try {
+      const response = await fetch(`${serverURL}/api/chatroom`);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+
+  const createNewRoom = async () => {
     if (newTitle.trim() !== "") {
-      const newRoom = {
-        roomName: newTitle,
-        image: selectedImage,
-        content: {},
-        invitedFriends: invitedFriends,
-      };
-      if (selectedImage !== null) {
-        newRoom.image = selectedImage;
+      const chatRoomInfo = await fetchChatRoomInfo();
+      if (chatRoomInfo) {
+        const formData = {
+          title: newTitle,
+          profile: selectedImage,
+          memberIds: invitedFriends.map((friend) => friend.memberId),
+        };
+        try {
+          const response = await fetch(`${serverURL}/api/chatroom`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          });
+
+          if (response.ok) {
+            console.log("새로운 채팅방을 성공적으로 생성했습니다.");
+            closeModal();
+            handleInviteFriends();
+          } else {
+            console.error("새로운 채팅방을 생성하는데 실패했습니다.");
+          }
+        } catch (error) {
+          console.error(
+            "새로운 채팅방을 생성하는 중 오류가 발생했습니다:",
+            error
+          );
+        }
+      } else {
+        console.error("서버로부터 채팅방 정보를 가져오는데 실패했습니다.");
       }
-      setChatRooms((prevRooms) => [...prevRooms, newRoom]);
-      closeModal();
-      handleInviteFriends();
     }
   };
 
@@ -314,7 +347,7 @@ const ChatMain = () => {
 
   const fetchMessagesForRoom = async (title) => {
     try {
-      const response = await fetch(`서버 API 엔드포인트/${title}`);
+      const response = await fetch(`${serverURL}/api/chatroom/${title}`);
       const data = await response.json();
 
       setRoomMessages((prevMessages) => ({
@@ -322,8 +355,13 @@ const ChatMain = () => {
         [title]: data,
       }));
       setSelectedRoomMessages(data);
+
+      const roomMembers = await fetchRoomMembers(title);
+      if (roomMembers) {
+        setInvitedFriends(roomMembers);
+      }
     } catch (error) {
-      console.error("Error fetching messages:", error);
+      console.error("에러", error);
     }
   };
 
@@ -419,6 +457,7 @@ const ChatMain = () => {
 
   const newGame = () => {
     window.open("https://naver.me/5vBykG4L");
+    console.log("dddd");
   };
 
   const toggleFriend = (friendId) => {
@@ -465,7 +504,15 @@ const ChatMain = () => {
                     <p>{friend.email}</p>
                     {isHovered && (
                       <div>
-                        <span>친구 추가</span> / <span>친구 삭제</span>
+                        <span onClick={() => addFriend(friend.memberId)}>
+                          친구 추가
+                        </span>{" "}
+                        /{" "}
+                        <span
+                          onClick={() => handleRemoveFriend(friend.memberId)}
+                        >
+                          친구 삭제
+                        </span>
                       </div>
                     )}
                   </div>
@@ -478,7 +525,7 @@ const ChatMain = () => {
         <div id="contacts">
           <div className="MylistGroup">
             <ul className="MyFriendList">
-              {MyFriendList.map((friend) => (
+              {MyFilteredFriends.map((friend) => (
                 <li key={friend.memberId} className="friend-item">
                   <img src={friend.profilePicture} alt={friend.name} />
                   <div className="MyFriendInfo">
@@ -519,7 +566,7 @@ const ChatMain = () => {
             <p>채팅방 만들기</p>
           </div>
           <div className="modalFriendList">
-            {MyFriendList.map((friend) => (
+            {MyFilteredFriends.map((friend) => (
               <div key={friend.memberId} className="modalFriendListItem">
                 <input
                   type="checkbox"
@@ -624,7 +671,7 @@ const ChatMain = () => {
                   <p>친구 초대하기</p>
                 </div>
                 <div className="modalFriendList">
-                  {MyFriendList.map((friend) => (
+                  {MyFilteredFriends.map((friend) => (
                     <div key={friend.memberId} className="modalFriendListItem">
                       <input
                         type="checkbox"
