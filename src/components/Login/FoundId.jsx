@@ -35,6 +35,11 @@ const FoundId = () => {
     }
   };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    await handleFindId();
+  };
+
   return (
     <div className="container">
       <div className="fi-box">
@@ -47,7 +52,7 @@ const FoundId = () => {
           />
           <label>아이디 찾기</label>
         </div>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="find">
             <input
               className="fi-id"
@@ -72,7 +77,7 @@ const FoundId = () => {
             </button>
             {isEmailValid && <p>이메일이 인증되었습니다.</p>}
           </div>
-          <button className="fi-bt" type="button" onClick={handleFindId}>
+          <button className="fi-bt" type="submit">
             아이디 찾기
           </button>
         </form>

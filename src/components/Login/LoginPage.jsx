@@ -43,32 +43,42 @@ function LoginPage() {
     setNotNext(!(idValid && passwordValid));
   }, [idValid, passwordValid]);
 
+  const handleSubmit = (event) => {
+    event.preventDefault(); // 기본 동작 막기
+    loginHandler(); // 로그인 함수 호출
+  };
+
   return (
     <div className="container">
       <div className="login-box">
         <div className="login-logo">
           <img src={Logo} alt="Logo" onClick={() => navigate("/")} />
         </div>
-        <div className="login-group">
-          <input
-            className="login-id"
-            type="text"
-            placeholder="아이디"
-            value={loginId}
-            onChange={(e) => setLoginId(e.target.value)}
-          />
-          <input
-            className="login-id"
-            type="password"
-            placeholder="비밀번호"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-
-          <button className="loginSumbit" onClick={loginHandler}>
-            로그인
-          </button>
-        </div>
+        <form onSubmit={handleSubmit}>
+          {" "}
+          {/* 폼 추가 */}
+          <div className="login-group">
+            <input
+              className="login-id"
+              type="text"
+              placeholder="아이디"
+              value={loginId}
+              onChange={(e) => setLoginId(e.target.value)}
+            />
+            <input
+              className="login-id"
+              type="password"
+              placeholder="비밀번호"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button className="loginSumbit" type="submit">
+              {" "}
+              {/* 수정된 부분 */}
+              로그인
+            </button>
+          </div>
+        </form>
         <div className="button">
           <button
             className="LoginAdd-in"
