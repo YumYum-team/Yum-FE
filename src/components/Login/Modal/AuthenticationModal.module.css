@@ -1,0 +1,97 @@
+@charset "UTF-8";
+
+.modal {
+  max-width: 70rem;
+  width: 90%;
+  height: auto;
+  padding: 2rem;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  width: 100%;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-container {
+  width: 100%;
+}
+
+.authentication-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.description {
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.user-email {
+  color: #b1b7c3;
+  font-size: 1.6rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+
+.input-container {
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.3rem;
+  box-shadow: -0.5px -0.5px 0 0 #b1b7c3, 1px 1px 0 0 #b1b7c3;
+  outline: none;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.input::placeholder {
+  color: #b1b7c3;
+}
+
+.button-section {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.before-button, .next-button {
+  font-size: 1.4rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+.before-button {
+  background-color: transparent;
+  color: #777d89;
+}
+
+.before-button:hover {
+  color: #008ff6;
+}
+
+.next-button {
+  background-color: #008ff6;
+  color: white;
+}
