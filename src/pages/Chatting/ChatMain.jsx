@@ -341,7 +341,7 @@ const ChatMain = () => {
       <div id="sidepanel">
         <p id="listText">내친구목록</p>
         <div id="search">
-          <i className="bi bi-search"></i>
+          <i className="bi-search"></i>
           <input
             type="text"
             placeholder="친구찾기"
@@ -389,7 +389,7 @@ const ChatMain = () => {
         </div>
       </div>
       {isModalOpen && (
-        <div className="modal">
+        <div className="modal-chat">
           <div className="modal-content">
             <p>채팅방 만들기</p>
           </div>
@@ -451,17 +451,17 @@ const ChatMain = () => {
             alt="프로필 이미지"
           />
           <p className="contentName">{editedName || ""}</p>
-          <i className="bi bi-pencil-square" onClick={handleEditModalOpen}></i>
+          <i className="bi-pencil-square" onClick={handleEditModalOpen}></i>
           <div className="chatSetting">
-            <i className="bi bi-person-plus-fill"></i>
+            <i className="bi-person-plus-fill"></i>
             <i
               onClick={openInvitedFriendsModal}
-              className="bi bi-person-lines-fill"
+              className="bi-person-lines-fill"
             ></i>
 
             {isInvitedFriendsModalOpen && (
-              <div className="modal">
-                <div className="mpdal-content">
+              <div className="modal-chat">
+                <div className="modal-content">
                   <p className="listP">채팅방 친구 목록</p>
                 </div>
                 <div className="modalFriendList2">
@@ -489,7 +489,7 @@ const ChatMain = () => {
         </div>
 
         {isEditModalOpen && (
-          <div className="modal">
+          <div className="modal-chat">
             <div className="modal-content">
               <p>채팅방 정보 변경</p>
             </div>
@@ -552,10 +552,10 @@ const ChatMain = () => {
             />
             <div className="btnContact">
               <button className="submit" onClick={newMessage}>
-                <i className="bi bi-send"></i>
+                <i className="bi-send"></i>
               </button>
               <button className="game" onClick={newGame}>
-                <i className="bi bi-controller"></i>
+                <i className="bi-controller"></i>
               </button>
             </div>
           </div>

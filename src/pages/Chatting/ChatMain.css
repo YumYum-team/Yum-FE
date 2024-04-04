@@ -479,7 +479,7 @@
 }
 /* ============채팅방수정모달 */
 
-.modal {
+.modal-chat {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -527,7 +527,7 @@
   align-items: start;
 }
 
-.madalFriendList input {
+.modalFriendList input {
   margin-right: 10px;
 }
 
@@ -538,22 +538,22 @@
 .modalFriendListItem {
   margin-bottom: 3px;
 }
-.modal .modalFriendList {
+.modal-chat .modalFriendList {
   max-height: 150px;
   overflow-y: auto;
 }
 @media screen and (max-width: 250px) {
-  .modal .modalFriendList {
+  .modal-chat .modalFriendList {
     height: calc(100% - 149px);
     overflow-y: scroll;
     overflow-x: hidden;
   }
 }
-.modal .modalFriendList::-webkit-scrollbar {
+.modal-chat .modalFriendList::-webkit-scrollbar {
   width: 5px;
   background: #f9f7f7;
 }
-.modal .modalFriendList::-webkit-scrollbar-thumb {
+.modal-chat .modalFriendList::-webkit-scrollbar-thumb {
   background-color: #f7f3cd;
   border-radius: 4px;
 }
@@ -572,11 +572,11 @@
     overflow-x: hidden;
   }
 }
-.modal .modalFriendList2::-webkit-scrollbar {
+.modal-chat .modalFriendList2::-webkit-scrollbar {
   width: 5px;
   background: #f9f7f7;
 }
-.modal .modalFriendList2::-webkit-scrollbar-thumb {
+.modal-chat .modalFriendList2::-webkit-scrollbar-thumb {
   background-color: #f7f3cd;
   border-radius: 4px;
 }

@@ -63,10 +63,13 @@ function LoginAdd() {
   };
 
   const requestSignUp = async (formData) => {
-    const response = await fetch("http://localhost:8080/auth/join", {
-      method: "POST",
-      body: formData,
-    });
+    const response = await fetch(
+      "http://138.2.122.249:8080/auth/join?loginId=string&password=string&memberName=string&phoneNum=string",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
