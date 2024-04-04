@@ -6,7 +6,7 @@ function Modal({ children, modalClass, bodyClass, title, onClose }) {
   return (
     <div className={styles["modal-container"]}>
       <div className={styles["modal-background"]}></div>
-      <div className={`${styles["modal"]} ${modalClass}`}>
+      <div className={`${styles["modal-m"]} ${modalClass}`}>
         <div className={styles["modal-header"]}>
           <span className={styles["title"]}>{title}</span>
           <button className={styles["close-button"]} onClick={onClose}>

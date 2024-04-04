@@ -20,7 +20,7 @@ function LoginPage() {
     formData.append("loginId", loginId);
     formData.append("password", password);
     try {
-      const response = await fetch("http://localhost:8080/auth/login", {
+      const response = await fetch("http://138.2.122.249:8080/auth/login", {
         method: "POST",
         body: formData,
       });

@@ -16,10 +16,13 @@ function AuthenticationModal({ onClose, loginId }) {
     formData.append("loginId", loginId);
 
     try {
-      const response = await fetch("http://localhost:8080/auth/auth-num", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "http://138.2.122.249:8080/auth/auth-num?authCode=string&loginId=string&password=string&memberName=string&phoneNum=string",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         alert("인증번호가 다릅니다.");
@@ -27,7 +30,7 @@ function AuthenticationModal({ onClose, loginId }) {
       }
 
       const joinResponse = await fetch(
-        "http://localhost:8080/auth/join-confirm",
+        "http://138.2.122.249:8080/auth/join-confirm?authCode=string&loginId=string",
         {
           method: "POST",
           body: formData,
@@ -52,7 +55,7 @@ function AuthenticationModal({ onClose, loginId }) {
   return (
     <Modal
       title={"이메일 인증"}
-      modalClass="modal"
+      modalClass="modal-login"
       bodyClass="modal-body"
       onClose={onClose}
     >
