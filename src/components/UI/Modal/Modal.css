@@ -19,7 +19,7 @@
   background-color: rgba(103, 107, 116, 0.7);
 }
 
-.modal {
+.modal-m {
   display: flex;
   flex-direction: column;
   background-color: #fff;

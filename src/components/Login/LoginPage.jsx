@@ -16,13 +16,17 @@ function LoginPage() {
   const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   const loginHandler = async () => {
-    const formData = new FormData();
-    formData.append("loginId", loginId);
-    formData.append("password", password);
+    const loginData = {
+      loginId: loginId,
+      password: password,
+    };
     try {
-      const response = await fetch("http://localhost:8080/auth/login", {
+      const response = await fetch("http://138.2.122.249:8080/auth/login", {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginData),
       });
       if (!response.ok) throw new Error("Login failed");
       navigate("/");
@@ -39,32 +43,42 @@ function LoginPage() {
     setNotNext(!(idValid && passwordValid));
   }, [idValid, passwordValid]);
 
+  const handleSubmit = (event) => {
+    event.preventDefault(); // 기본 동작 막기
+    loginHandler(); // 로그인 함수 호출
+  };
+
   return (
     <div className="container">
       <div className="login-box">
         <div className="login-logo">
           <img src={Logo} alt="Logo" onClick={() => navigate("/")} />
         </div>
-        <div className="login-group">
-          <input
-            className="login-id"
-            type="text"
-            placeholder="아이디"
-            value={loginId}
-            onChange={(e) => setLoginId(e.target.value)}
-          />
-          <input
-            className="login-id"
-            type="password"
-            placeholder="비밀번호"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-
-          <button className="loginSumbit" onClick={loginHandler}>
-            로그인
-          </button>
-        </div>
+        <form onSubmit={handleSubmit}>
+          {" "}
+          {/* 폼 추가 */}
+          <div className="login-group">
+            <input
+              className="login-id"
+              type="text"
+              placeholder="아이디"
+              value={loginId}
+              onChange={(e) => setLoginId(e.target.value)}
+            />
+            <input
+              className="login-id"
+              type="password"
+              placeholder="비밀번호"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button className="loginSumbit" type="submit">
+              {" "}
+              {/* 수정된 부분 */}
+              로그인
+            </button>
+          </div>
+        </form>
         <div className="button">
           <button
             className="LoginAdd-in"

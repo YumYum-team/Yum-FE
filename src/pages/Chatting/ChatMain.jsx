@@ -478,7 +478,7 @@ const ChatMain = () => {
       <div id="sidepanel">
         <p id="listText">내친구목록</p>
         <div id="search">
-          <i className="bi bi-search"></i>
+          <i className="bi-search"></i>
           <input
             type="text"
             placeholder="친구찾기 (이름 or 이메일)"
@@ -560,6 +560,7 @@ const ChatMain = () => {
           ))}
         </div>
       </div>
+
       {roomModalOpen && (
         <div className="chatModal">
           <div className="modal-content">
@@ -636,7 +637,7 @@ const ChatMain = () => {
             ></i>
             <i
               onClick={openInvitedFriendsModal}
-              className="bi bi-person-lines-fill"
+              className="bi-person-lines-fill"
             ></i>
 
             {isInvitedFriendsModalOpen && (
@@ -818,10 +819,10 @@ const ChatMain = () => {
             />
             <div className="btnContact">
               <button className="submit" onClick={newMessage}>
-                <i className="bi bi-send"></i>
+                <i className="bi-send"></i>
               </button>
               <button className="game" onClick={newGame}>
-                <i className="bi bi-controller"></i>
+                <i className="bi-controller"></i>
               </button>
             </div>
           </div>
