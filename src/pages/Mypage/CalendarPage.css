@@ -1,0 +1,151 @@
+.pageBack {
+  font-size: 25px;
+  margin: 3rem;
+  background-color: white;
+  border: none;
+}
+
+.calendarBox {
+  padding: 10px;
+  width: 80%;
+  max-width: 750px;
+  height: 0 auto;
+
+  /* border: 1px solid red; */
+}
+
+.fc-day-mon a,
+.fc-day-tue a,
+.fc-day-wed a,
+.fc-day-thu a,
+.fc-day-fri a {
+  color: black;
+  text-decoration: none;
+}
+
+.fc-day-sun a {
+  color: red;
+  text-decoration: none;
+}
+
+.fc-day-sat a {
+  color: blue;
+  text-decoration: none;
+}
+
+.sectionBox {
+  display: flex;
+  margin-left: 50px;
+}
+
+.leftSection {
+  width: 800px;
+  height: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 6rem;
+  padding: 20px;
+  border: 3px solid #fff0aa;
+  border-radius: 20px;
+}
+
+.rightSection {
+  width: 600px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 2rem;
+  padding-top: 10px;
+  border: 3px solid #fff0aa;
+  border-radius: 20px;
+}
+
+.gameResultBox {
+  width: 500px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* border: 1px solid Pink; */
+}
+
+.gameResult {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.gameResultImage {
+  width: 400px;
+  height: 150px;
+  border: 1px solid #996602;
+  background-color: white;
+}
+
+.memoHeader {
+  margin-top: 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.memoInput {
+  width: 50%;
+  height: 100px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: none;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.saveButton,
+.closeButton {
+  background-color: #fff0aa;
+  border: solid 1px #996602;
+  border-radius: 5px;
+  margin: 20px 10px 0px 10px;
+  font-size: 15px;
+}
+
+.memoListBox {
+  margin-top: 20px;
+  /* border: 1px solid blue; */
+}
+
+.memoList {
+  margin: 10px;
+  font-size: 17px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid green; */
+}
+
+.memo {
+  padding: 7px;
+}
+
+.updateMemo {
+  font-size: 15px;
+  background-color: #fff0aa;
+  border: solid 1px #996602;
+  border-radius: 5px;
+  margin-left: 30px;
+}
+
+.updateMemo,
+.deleteMemo {
+  font-size: 15px;
+  background-color: #fff0aa;
+  border: solid 1px #996602;
+  border-radius: 5px;
+  margin-left: 10px;
+}
+
+.editMemo {
+  margin-left: 2rem;
+}

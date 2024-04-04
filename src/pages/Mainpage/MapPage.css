@@ -1,0 +1,86 @@
+/*.left {*/
+/*  width: 30rem;*/
+/*  height: 100vh;*/
+/*  !* outline: solid 0.15px lightgray; *!*/
+/*}*/
+
+/*.search {*/
+/*  margin: 30px;*/
+/*  display: flex;*/
+/*  align-items: center;*/
+/*  flex-direction: column;*/
+/*  width: 25rem;*/
+/*  border: 1px solid #ccc;*/
+/*  border-radius: 5px;*/
+/*  overflow: hidden; !* 내부 요소가 넘치지 않도록 설정 *!*/
+/*}*/
+
+/*.searchbox input[type="text"] {*/
+/*  display: flex;*/
+/*  align-items: center;*/
+/*  flex-direction: column;*/
+/*  padding-left: 10px;*/
+/*  border: none;*/
+/*  outline: none;*/
+/*}*/
+
+/*.searchbox button {*/
+/*  background-color: white; !* 검색 버튼 배경색 *!*/
+/*  color: lightslategray; !* 검색 버튼 텍스트 색상 *!*/
+/*  border: none;*/
+/*  padding: 8px 12px;*/
+/*  cursor: pointer;*/
+/*}*/
+
+/*.starred {*/
+/*  padding: 20px 30px 20px 30px;*/
+/*  outline: solid 0.15px gray;*/
+/*  font-weight: bold;*/
+/*}*/
+
+/*.food {*/
+/*  padding: 20px 30px 20px 30px;*/
+/*  background-color: rgb(255, 210, 0);*/
+/*  outline: solid 0.15px gray;*/
+/*  font-weight: bold;*/
+/*}*/
+
+/*.food-option {*/
+/*  padding: 30px;*/
+/*  background-color: #fff0aa;*/
+/*  outline: none;*/
+/*}*/
+
+/*.place {*/
+/*  padding: 20px 30px 20px 30px;*/
+/*  background-color: rgb(255, 210, 0);*/
+/*  outline: solid 0.15px rgb(128, 128, 128);*/
+/*  font-weight: bold;*/
+/*}*/
+
+/*.place-option {*/
+/*  padding: 30px;*/
+/*  background-color: #fff0aa;*/
+/*  outline: none;*/
+/*}*/
+
+/*.price {*/
+/*  padding: 20px 30px 20px 30px;*/
+/*  background-color: rgb(255, 210, 0);*/
+/*  outline: solid 0.15px gray;*/
+/*  font-weight: bold;*/
+/*}*/
+
+/*.price-option {*/
+/*  padding: 30px;*/
+/*  background-color: #fff0aa;*/
+/*  outline: none;*/
+/*}*/
+
+/*.button2 {*/
+/*  background-color: white;*/
+/*  color: lightslategray;*/
+/*  border: none;*/
+/*  padding: 8px 12px;*/
+/*  cursor: pointer;*/
+/*}*/
