@@ -16,13 +16,17 @@ function LoginPage() {
   const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   const loginHandler = async () => {
-    const formData = new FormData();
-    formData.append("loginId", loginId);
-    formData.append("password", password);
+    const loginData = {
+      loginId: loginId,
+      password: password,
+    };
     try {
       const response = await fetch("http://138.2.122.249:8080/auth/login", {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginData),
       });
       if (!response.ok) throw new Error("Login failed");
       navigate("/");
