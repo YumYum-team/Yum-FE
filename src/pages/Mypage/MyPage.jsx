@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./MyPage.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-bootstrap";
@@ -19,97 +19,10 @@ const MyPage = () => {
   const [inviteModal, setInviteModal] = useState(false);
   const [unregisterModal, setUnregisterModal] = useState(false);
   const [email, setEmail] = useState();
-  const [profileImage, setProfileImage] = useState("");
   const [userId, setUserId] = useState();
   const [foundUser, setFoundUser] = useState(null);
   const [invitationSent, setInvitationSent] = useState({});
   const navigate = useNavigate();
-  const [fetchState, setFetchState] = useState({ accessToken: null });
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch("http://138.2.122.249:8080/v1/api/myInfo", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${fetchState.accessToken}`,
-              },
-            }
-        );
-        if (response.ok) {
-          const userData = await response.json();
-          setEmail(userData.email);
-          setProfileImage(userData.profileImage);
-        } else {
-          throw new Error("사용자 데이터를 가져오는 데 실패했습니다.");
-        }
-      } catch (error) {
-        console.error("사용자 데이터를 가져오는 중 오류 발생:", error);
-      }
-    };
-
-    fetchUserData();
-  }, []);
-
-  const searchUser = async () => {
-    try {
-      const response = await fetch(
-          "http://138.2.122.249:8080/v1/api/userIdSearch", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ userId }),
-          }
-      );
-      if (response.ok) {
-        const userData = await response.json();
-        setFoundUser(userData);
-      } else {
-        setFoundUser(null);
-      }
-    } catch (error) {
-      console.error("사용자 정보를 찾을 수 없습니다:", error);
-      setFoundUser(null);
-    }
-  };
-
-  const unregisterHandler = async () => {
-    try {
-      const response = await fetch("http://138.2.122.249:8080/v1/api/deleteUser", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-      );
-
-      if (response.ok) {
-        navigate("/");
-      } else {
-        throw new Error("사용자 탈퇴에 실패했습니다.");
-      }
-    } catch (error) {
-      console.error("사용자 탈퇴 중 오류 발생:", error);
-    }
-  };
-
-  const logoutButtonHandler = async () => {
-    try {
-      const response = await fetch("http://138.2.122.249:8080/auth/logout", {
-        method: "GET",
-      });
-
-      if (response.ok) {
-        navigate("/");
-      } else {
-        throw new Error("사용자 로그아웃에 실패했습니다.");
-      }
-    } catch (error) {
-      console.error("사용자 로그아웃 중 오류 발생:", error);
-    }
-  };
 
   const inviteModalhHandler = () => {
     setInviteModal(true);
@@ -119,6 +32,20 @@ const MyPage = () => {
     setInviteModal(false);
     setUserId("");
     setFoundUser(null);
+  };
+
+  // 사용자 검색 함수
+  const searchUser = () => {
+    // 여기서 사용자 ID를 기반으로 사용자를 검색하는 로직을 구현해야 합니다.
+    // 예를 들어, 입력된 ID를 기반으로 사용자 데이터를 가져오는 API 호출을 할 수 있습니다.
+    // 이 예시에서는 하드코딩된 목록에서 사용자를 찾는 것을 시뮬레이션합니다.
+    const users = [
+      { id: "test1", profileImg: profile },
+      { id: "test2", profileImg: profile },
+    ];
+
+    const user = users.find((user) => user.id === userId);
+    setFoundUser(user);
   };
 
   // 초대 버튼 클릭 시 동작
@@ -147,6 +74,10 @@ const MyPage = () => {
     navigate("/calendar");
   };
 
+  const logoutButtonHandler = () => {
+    navigate("/");
+  };
+
   const unregisterModalhHandler = () => {
     setUnregisterModal(true);
   };
@@ -155,144 +86,141 @@ const MyPage = () => {
     setUnregisterModal(false);
   };
 
-  const handleInputKeyDown = (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      searchUser();
-    }
+  const unregisterHandler = () => {
+    navigate("/");
+    //네 버튼 선택시 메인페이지로 이동
   };
 
   return (
-      <div className="myPage-box">
-        <div className="left-section">
-          <div className="profile-photo">
-            {/* <img src={profileImage} alt="profile" /> */}
-            {/* <div className="email">{email}</div> */}
-            <img src={profile} alt="profile" />
-          </div>
-          <div className="email">test2580@naver.com</div>
-          <button className="info-edit" onClick={editButtonHandler}>
-            내정보수정
+    <div className="myPage-box">
+      <div className="left-section">
+        <div className="profile-photo">
+          <img src={profile} alt="profile" />
+        </div>
+        <div className="email">{email}test2580@naver.com</div>
+        <button className="info-edit" onClick={editButtonHandler}>
+          내정보수정
+        </button>
+      </div>
+
+      <div className="right-section">
+        <div className="myPage-button1">
+          <button className="invite" onClick={inviteModalhHandler}>
+            <PersonPlusFill />
+            초대하기
+          </button>
+
+          {/*초대하기 모달*/}
+
+          <Modal
+            className="inviteModal"
+            show={inviteModal}
+            onHide={inviteCloseHandler}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title className="inviteTitle">친구 초대하기</Modal.Title>
+            </Modal.Header>
+            <Modal.Body className="modalBody">
+              {/* 검색된 사용자 표시 */}
+              {foundUser && (
+                <div className="userBox">
+                  <span className="userprofile">
+                    <img src={foundUser.profileImg} alt="프로필" />
+                  </span>
+                  <span className="searchId">{foundUser.id}</span>
+                  <Button
+                    className="modalInvite"
+                    onClick={() => inviteHandler(foundUser.id)}
+                  >
+                    {invitationSent[foundUser.id] ? "취소" : "초대하기"}
+                  </Button>
+                </div>
+              )}
+              {/* 사용자 없는 경우 메시지 표시 */}
+              {!foundUser && userId && (
+                <div className="notFoundMessage">
+                  해당 사용자를 찾을 수 없습니다.
+                </div>
+              )}
+              {/* 검색창 */}
+              <div>
+                <input
+                  className="userIdSearch"
+                  type="text"
+                  placeholder="유저 ID를 입력하세요."
+                  value={userId}
+                  onChange={(e) => setUserId(e.target.value)}
+                />
+                <button className="userIdSearchButton" onClick={searchUser}>
+                  <ArrowReturnLeft />
+                </button>
+              </div>
+            </Modal.Body>
+            <Modal.Footer className="inviteFooter">
+              <Button className="modalInviteClose" onClick={inviteCloseHandler}>
+                닫기
+              </Button>
+            </Modal.Footer>
+          </Modal>
+
+          <button className="chatting" onClick={chatButtonHandler}>
+            <ChatRightTextFill />
+            채팅
+          </button>
+          <button className="favorites" onClick={favoriteButtonHandler}>
+            <StarFill />
+            저장한장소
+          </button>
+          <button className="calendar" onClick={calendarButtonHandler}>
+            <Calendar />
+            달력
           </button>
         </div>
+      </div>
+      <div className="right-section2">
+        <div className="myPage-button2">
+          <button className="logout" onClick={logoutButtonHandler}>
+            <BoxArrowRight />
+            로그아웃
+          </button>
 
-        <div className="right-section">
-          <div className="myPage-button1">
-            <button className="invite" onClick={inviteModalhHandler}>
-              <PersonPlusFill />
-              초대하기
-            </button>
+          <button className="unregister" onClick={unregisterModalhHandler}>
+            <PersonXFill /> 탈퇴하기
+          </button>
 
-            <Modal
-                className="inviteModal"
-                show={inviteModal}
-                onHide={inviteCloseHandler}
-            >
-              <Modal.Header closeButton>
-                <Modal.Title className="inviteTitle">친구 초대하기</Modal.Title>
-              </Modal.Header>
-              <Modal.Body className="modalBody">
-                {/* 검색된 사용자 표시 */}
-                {foundUser && (
-                    <div className="userBox">
-                  <span className="userprofile">
-                    <img src={foundUser.profileImage} alt="프로필" />
-                  </span>
-                      <span className="searchId">{foundUser.userId}</span>
-                      <Button
-                          className="modalInvite"
-                          onClick={() => inviteHandler(foundUser.id)}
-                      >
-                        {invitationSent[foundUser.id] ? "취소" : "초대하기"}
-                      </Button>
-                    </div>
-                )}
-                {/* 사용자 없는 경우 메시지 표시 */}
-                {!foundUser && userId && (
-                    <div className="notFoundMessage">
-                      해당 사용자를 찾을 수 없습니다.
-                    </div>
-                )}
-                {/* 검색창 */}
-                <div>
-                  <input
-                      className="userIdSearch"
-                      type="text"
-                      placeholder="유저 ID를 입력하세요."
-                      value={userId}
-                      onChange={(e) => setUserId(e.target.value)}
-                      onKeyDown={handleInputKeyDown}
-                  />
-                  <button className="userIdSearchButton" onClick={searchUser}>
-                    <ArrowReturnLeft />
-                  </button>
-                </div>
-              </Modal.Body>
-              <Modal.Footer className="inviteFooter">
-                <Button className="modalInviteClose" onClick={inviteCloseHandler}>
-                  닫기
-                </Button>
-              </Modal.Footer>
-            </Modal>
+          <Modal
+            className="unregisterModal"
+            show={unregisterModal}
+            onHide={unregisterCloseHandler}
+          >
+            <Modal.Header className="modalUnregisterHeader" closeButton>
+              <Modal.Title className="unregisterTitle">
+                <img src={webLogo} alt="webLogo" />
+              </Modal.Title>
+            </Modal.Header>
 
-            <button className="chatting" onClick={chatButtonHandler}>
-              <ChatRightTextFill />
-              채팅
-            </button>
-            <button className="favorites" onClick={favoriteButtonHandler}>
-              <StarFill />
-              저장한장소
-            </button>
-            <button className="calendar" onClick={calendarButtonHandler}>
-              <Calendar />
-              달력
-            </button>
-          </div>
-        </div>
-        <div className="right-section2">
-          <div className="myPage-button2">
-            <button className="logout" onClick={logoutButtonHandler}>
-              <BoxArrowRight />
-              로그아웃
-            </button>
+            <Modal.Body className="modalUnregisterBody">
+              정말 탈퇴하시겠습니까?
+            </Modal.Body>
 
-            <button className="unregister" onClick={unregisterModalhHandler}>
-              <PersonXFill /> 탈퇴하기
-            </button>
-
-            <Modal
-                className="unregisterModal"
-                show={unregisterModal}
-                onHide={unregisterCloseHandler}
-            >
-              <Modal.Header className="modalUnregisterHeader" closeButton>
-                <Modal.Title className="unregisterTitle">
-                  <img src={webLogo} alt="webLogo" />
-                </Modal.Title>
-              </Modal.Header>
-
-              <Modal.Body className="modalUnregisterBody">
-                정말 탈퇴하시겠습니까?
-              </Modal.Body>
-
-              <Modal.Footer className="modalunregisterFooter">
-                <Button
-                    className="modalUnregisterYes"
-                    onClick={unregisterHandler}
-                >
-                  네
-                </Button>
-                <Button
-                    className="modalUnregisterNo"
-                    onClick={unregisterCloseHandler}
-                >
-                  아니요
-                </Button>
-              </Modal.Footer>
-            </Modal>
-          </div>
+            <Modal.Footer className="modalunregisterFooter">
+              <Button
+                className="modalUnregisterYes"
+                onClick={unregisterHandler}
+              >
+                네
+              </Button>
+              <Button
+                className="modalUnregisterNo"
+                onClick={unregisterCloseHandler}
+              >
+                아니요
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </div>
       </div>
+    </div>
   );
 };
 
