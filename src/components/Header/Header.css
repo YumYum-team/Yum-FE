@@ -23,3 +23,13 @@ button.profile-link {
   cursor: pointer;
   margin-right: 5px;
 }
+
+button.user_icons {
+  background-color: #fff0aa;
+  border: none;
+}
+
+.user_icons img {
+  width: 40px;
+  height: 40px;
+}
