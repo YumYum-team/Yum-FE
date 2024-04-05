@@ -148,7 +148,7 @@ const ChatMain = () => {
     }
   };
 
-  const fetchMyFriendList = async () => {
+  const fetchMyFriendList = async (memberId) => {
     try {
       const response = await fetch(`${serverURL}/api/${memberId}/friends`);
       const data = await response.json();
