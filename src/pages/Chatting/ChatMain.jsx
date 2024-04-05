@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 // import WebSocketHandler from "./WebSocket";
+// import { io } from "socket.io-client";
 import "./ChatMain.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import profileImage from "../../assets/images/profile.png";
@@ -9,7 +10,15 @@ import profileImage4 from "../../assets/images/webLogo.png";
 import profileImage5 from "../../assets/images/profile2.png";
 
 const serverURL = "http://138.2.122.249:8080";
-// const currentUserId = "사용자ID";
+// const socket = io("http://localhost:3000");
+
+// socket.on("connect", () => {
+//   console.log("WebSocket연결 성공");
+// });
+
+// socket.on("disconnect", () => {
+//   console.log("WebSocket연결 끊김");
+// });
 
 const ChatMain = () => {
   const [messages, setMessages] = useState([]);
@@ -59,7 +68,7 @@ const ChatMain = () => {
     fileInput.accept = "image/*";
     fileInput.addEventListener("change", handleImageSelect);
     fileInput.click();
-    console.log("sssss");
+    console.log("콘솔을찍히는데 실행안됨");
   };
 
   const handleEditModalOpen = () => {
@@ -123,6 +132,56 @@ const ChatMain = () => {
   //   WebSocketHandler.connect();
   // }, []);
 
+  const mockMyFriendList = [
+    {
+      id: 1,
+      name: "김훈희",
+      email: "a@example.com",
+      profilePicture: profileImage,
+    },
+    {
+      id: 2,
+      name: "홍수진",
+      email: "ab@example.com",
+      profilePicture: profileImage,
+    },
+    {
+      id: 3,
+      name: "이하름",
+      email: "abc@example.com",
+      profilePicture: profileImage,
+    },
+    {
+      id: 4,
+      name: "이예린",
+      email: "abcd@example.com",
+      profilePicture: profileImage,
+    },
+    {
+      id: 5,
+      name: "방동호",
+      email: "abcde@example.com",
+      profilePicture: profileImage,
+    },
+    {
+      id: 6,
+      name: "이봉순",
+      email: "fhhh@example.com",
+      profilePicture: profileImage,
+    },
+    {
+      id: 7,
+      name: "이친구",
+      email: "hhh@example.com",
+      profilePicture: profileImage,
+    },
+  ];
+
+  useEffect(() => {
+    setMyFriendList(mockMyFriendList);
+    setMyFilteredFriends(mockMyFriendList);
+  }, []);
+
   useEffect(() => {
     const messagesContainer = document.querySelector(".messages");
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -151,13 +210,13 @@ const ChatMain = () => {
 
   const fetchMyFriendList = async () => {
     try {
-      const response = await fetch(`${serverURL}/api/${memberId}/friends`);
+      const response = await fetch(`${serverURL}/api/friends`);
       const data = await response.json();
 
       if (Array.isArray(data)) {
         const formattedData = data.map((friend) => ({
-          memberId: friend.id,
-          name: friend.memberName,
+          Id: friend.memberId,
+          memberName: friend.memberName,
           email: friend.loginId,
           profilePicture: profileImage2,
         }));
@@ -463,7 +522,7 @@ const ChatMain = () => {
 
   const newGame = () => {
     window.open("https://naver.me/5vBykG4L");
-    console.log("dddd");
+    console.log("콘솔은찍히는데실행안됨");
   };
 
   const toggleFriend = (friendId) => {
@@ -531,7 +590,7 @@ const ChatMain = () => {
         <div id="contacts">
           <div className="MylistGroup">
             <ul className="MyFriendList">
-              {MyFilteredFriends.map((friend) => (
+              {mockMyFriendList.map((friend) => (
                 <li key={friend.memberId} className="friend-item">
                   <img src={friend.profilePicture} alt={friend.name} />
                   <div className="MyFriendInfo">
@@ -573,7 +632,7 @@ const ChatMain = () => {
             <p>채팅방 만들기</p>
           </div>
           <div className="modalFriendList">
-            {MyFilteredFriends.map((friend) => (
+            {mockMyFriendList.map((friend) => (
               <div key={friend.memberId} className="modalFriendListItem">
                 <input
                   type="checkbox"
