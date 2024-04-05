@@ -87,10 +87,12 @@
 }
 @media screen and (max-width: 735px) {
   #frame #roomPanel #roomSelec .wrap {
+
     width: 75px;
     height: 55px;
   }
 }
+
 
 #frame #sidepanel #search {
   display: flex;
@@ -519,7 +521,6 @@
   }
 }
 /* ============채팅방수정모달 */
-
 .chatModal {
   position: fixed;
   top: 50%;

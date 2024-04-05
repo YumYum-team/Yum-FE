@@ -43,6 +43,7 @@ function LoginPage() {
     setNotNext(!(idValid && passwordValid));
   }, [idValid, passwordValid]);
 
+
   const handleSubmit = (event) => {
     event.preventDefault(); // 기본 동작 막기
     loginHandler(); // 로그인 함수 호출

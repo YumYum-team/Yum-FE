@@ -29,6 +29,12 @@ const ChatMain = () => {
   const [selectedRoomContent, setSelectedRoomContent] = useState({});
   const [selectedFriends, setSelectedFriends] = useState([]);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editedImage, setEditedImage] = useState("");
+  const [editedName, setEditedName] = useState("");
+  const [profileName, setProfileName] = useState("이름을설정해주세요");
+  const [editedRoomId, setEditedRoomId] = useState("");
+  const [invitedFriends, setInvitedFriends] = useState([]);
+  const [isInvitedFriendsModalOpen, setIsInvitedFriendsModalOpen] = useState(false);
   const [editedName, setEditedName] = useState("");
   const [profileName, setProfileName] = useState("이름을설정해주세요");
   const [editedTitle, setEditedTitle] = useState("");
@@ -52,14 +58,12 @@ const ChatMain = () => {
   const handleImageClick = (image) => {
     setSelectedImage(image);
   };
-
   const handleFileSelectClick = () => {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
     fileInput.accept = "image/*";
     fileInput.addEventListener("change", handleImageSelect);
     fileInput.click();
-    console.log("sssss");
   };
 
   const handleEditModalOpen = () => {
@@ -69,7 +73,6 @@ const ChatMain = () => {
   const handleEditModalClose = () => {
     setIsEditModalOpen(false);
   };
-
   const handleInviteFriendsModalOpen = () => {
     setIsInviteFriendsModalOpen(true);
   };
