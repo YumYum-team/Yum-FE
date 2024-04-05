@@ -9,7 +9,7 @@ import profileImage4 from "../../assets/images/webLogo.png";
 import profileImage5 from "../../assets/images/profile2.png";
 
 const serverURL = "http://138.2.122.249:8080";
-const currentUserId = "사용자ID";
+// const currentUserId = "사용자ID";
 
 const ChatMain = () => {
   const [messages, setMessages] = useState([]);
@@ -154,19 +154,23 @@ const ChatMain = () => {
 
   const fetchMyFriendList = async () => {
     try {
-      const response = await fetch(`${serverURL}/api/${currentUserId}/friends`);
+      const response = await fetch(`${serverURL}/api/${memberId}/friends`);
       const data = await response.json();
 
-      const formattedData = data.map((friend) => ({
-        memberId: friend.id,
-        name: friend.memberName,
-        email: friend.loginId,
-        profilePicture: profileImage2,
-      }));
-      setMyFriendList(formattedData);
-      setMyFilteredFriends(formattedData);
+      if (Array.isArray(data)) {
+        const formattedData = data.map((friend) => ({
+          memberId: friend.id,
+          name: friend.memberName,
+          email: friend.loginId,
+          profilePicture: profileImage2,
+        }));
+        setMyFriendList(formattedData);
+        setMyFilteredFriends(formattedData);
+      } else {
+        console.error("친구 목록이 배열 형태가 아닙니다.");
+      }
     } catch (error) {
-      console.log("Error fetching my friend list:", error);
+      console.error("에러", error);
     }
   };
 
@@ -178,7 +182,7 @@ const ChatMain = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userId: currentUserId,
+          friendshipId: memberId,
         }),
       });
       if (response.ok) {
@@ -199,11 +203,13 @@ const ChatMain = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        userId: currentUserId,
+        body: JSON.stringify({
+          friendshipId: memberId,
+        }),
       });
 
       if (response.ok) {
-        console.log("친구가 성공적으로 삭제되었습니다.");
+        console.log("친구 삭제 성공");
         fetchMyFriendList();
       } else {
         console.error("친구 삭제 실패");
@@ -226,10 +232,10 @@ const ChatMain = () => {
     }
   };
 
-  const handleLeaveRoom = async () => {
+  const handleLeaveRoom = async (memberId) => {
     try {
       const requestBody = {
-        memberId: currentUserId,
+        memberId: memberId,
         chatroomId: selectedRoomContent.chatroomId,
       };
 
