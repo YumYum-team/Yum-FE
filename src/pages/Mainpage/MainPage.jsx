@@ -280,7 +280,7 @@ function MainPage() {
     const searchParam = new URLSearchParams({ searchInput });
 
     const response = await fetch(
-      `http://localhost:8080/api/restaurants?${searchParam}`,
+      `http://138.2.122.249:8080/api/restaurants?${searchParam}`,
       {
         method: "GET",
         headers: {

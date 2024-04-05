@@ -1,30 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import "./Header.css";
-import {profile, webLogo} from "../../assets/images";
+import { profile, webLogo, user_icon } from "../../assets/images";
 
 function Header() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const handleProfileClick = () => {
-    if (isLoggedIn) {
-      window.location.href = "/mypage";
-    } else {
-      window.location.href = "/login";
-    }
-  };
-
   return (
     <div className="Header">
       <div className="weblog">
+        {/* 로고 링크 */}
         <Link to="/" className="logo-link">
           <img src={webLogo} alt="webLogo" />
         </Link>
       </div>
       <div className="profile">
-        <button className="profile-link" onClick={handleProfileClick}>
+        {/* 사용자 아이콘 링크 */}
+        <Link to="/login" className="user_icons">
+          <img src={user_icon} alt="user_icon" />
+        </Link>
+        {/* 프로필 링크 */}
+        <Link to="/mypage" className="profile-link">
           <img src={profile} alt="profile" />
-        </button>
+        </Link>
       </div>
     </div>
   );

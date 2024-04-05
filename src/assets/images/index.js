@@ -9,3 +9,4 @@ export { default as naver } from "./naver.png";
 export { default as tabler_x } from "./tabler_x.svg";
 export { default as leftArrow } from "./leftArrow.png";
 export { default as marker } from "./marker.png";
+export { default as user_icon } from "./user_icon.svg";

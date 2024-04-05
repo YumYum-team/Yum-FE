@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { NaverMap, useNavermaps, Marker } from "react-naver-maps";
-import styles from "./Accordion.module.css";
+import "./Accordion.css";
 // import RestaurantList from "./RestaurantList";
 import { Link } from "react-router-dom";
 
@@ -232,7 +232,7 @@ function Accordion() {
         {/* 검색 버튼 */}
         <div className="button2">
           {/* <Link to="/RestaurantList/restaurant-list"> */}
-          <button>검색</button>
+          <button className="btn-search">검색</button>
           {/* </Link> */}
         </div>
       </div>

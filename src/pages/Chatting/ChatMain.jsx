@@ -34,13 +34,9 @@ const ChatMain = () => {
   const [profileName, setProfileName] = useState("이름을설정해주세요");
   const [editedRoomId, setEditedRoomId] = useState("");
   const [invitedFriends, setInvitedFriends] = useState([]);
-  const [isInvitedFriendsModalOpen, setIsInvitedFriendsModalOpen] = useState(false);
-  const [editedName, setEditedName] = useState("");
-  const [profileName, setProfileName] = useState("이름을설정해주세요");
-  const [editedTitle, setEditedTitle] = useState("");
-  const [invitedFriends, setInvitedFriends] = useState([]);
   const [isInvitedFriendsModalOpen, setIsInvitedFriendsModalOpen] =
     useState(false);
+  const [editedTitle, setEditedTitle] = useState("");
   const [isHovered, setIsHovered] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [modalDropdown, setModalDropdown] = useState(false);

@@ -1,6 +1,10 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 import HeaderLayout from "./pages/HeaderLayout";
 import Chatpage from "./pages/Chatting/ChatPage";
 import MyPage from "./pages/Mypage/MyPage";
@@ -18,10 +22,10 @@ import MainPage from "./pages/Mainpage/MainPage";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Navigate to="/mainpage" replace={true} />
+    element: <Navigate to="/" replace={true} />,
   },
   {
-    path: "/mainpage",
+    path: "/",
     element: <HeaderLayout />,
     children: [
       { index: true, element: <MainPage /> },
@@ -41,7 +45,6 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-
   return <RouterProvider router={router} />;
 }
 
