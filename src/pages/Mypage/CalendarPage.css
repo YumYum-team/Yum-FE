@@ -129,7 +129,7 @@
   padding: 7px;
 }
 
-.editMemo {
+.updateMemo {
   font-size: 15px;
   background-color: #fff0aa;
   border: solid 1px #996602;
@@ -137,7 +137,7 @@
   margin-left: 30px;
 }
 
-.editMemo,
+.updateMemo,
 .deleteMemo {
   font-size: 15px;
   background-color: #fff0aa;

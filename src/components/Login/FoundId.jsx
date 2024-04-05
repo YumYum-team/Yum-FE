@@ -53,6 +53,7 @@ const FoundId = () => {
           <label>아이디 찾기</label>
         </div>
         <form onSubmit={handleSubmit}>
+
           <div className="find">
             <input
               className="fi-id"

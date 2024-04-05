@@ -17,27 +17,40 @@ const EditPage = () => {
   });
   const [passwordError, setPasswordError] = useState("");
   const [passwordMatchError, setPasswordMatchError] = useState("");
+  const [fetchState, setFetchState] = useState({ accessToken: null });
 
   useEffect(() => {
-    // 유저 정보 가져오는 API 호출
-    fetchUserInfo();
-  }, []);
-
-  const fetchUserInfo = async () => {
-    try {
-      const response = await fetch("/api/user/profile", {
-        method: "GET",
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setUserInfo(data);
-      } else {
-        console.error("정보 불러오기 실패");
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(
+          "http://138.2.122.249:8080/v1/api/myInfo",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${fetchState.accessToken}`,
+            },
+          }
+        );
+        if (response.ok) {
+          const userData = await response.json();
+          setUserInfo({
+            email: userData.email,
+            id: userData.id,
+            phoneNumber: userData.phoneNumber,
+            name: userData.name,
+            profileImage: userData.profileImage,
+          });
+        } else {
+          throw new Error("사용자 데이터를 가져오는 데 실패했습니다.");
+        }
+      } catch (error) {
+        console.error("사용자 데이터를 가져오는 중 오류 발생:", error);
       }
-    } catch (error) {
-      console.error("정보 불러오기 실패:", error);
-    }
-  };
+    };
+
+    fetchUserData();
+  }, []);
 
   const editBackButtonHandler = () => {
     navigate("/mypage");
@@ -95,7 +108,7 @@ const EditPage = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (userInfo.password !== userInfo.passwordConfirm) {
       alert("비밀번호가 일치하지 않습니다. 다시 확인해주세요");
       setUserInfo({
@@ -124,8 +137,29 @@ const EditPage = () => {
       setPasswordMatchError("");
       return;
     }
-    alert("비밀번호가 변경되었습니다.");
-    navigate("/");
+
+    try {
+      const response = await fetch(
+        "http://138.2.122.249:8080/v1/api/updatePassword",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            password: userInfo.password,
+          }),
+        }
+      );
+      if (response.ok) {
+        alert("비밀번호가 변경되었습니다.");
+        navigate("/");
+      } else {
+        console.error("비밀번호 변경 실패");
+      }
+    } catch (error) {
+      console.error("비밀번호 변경 실패:", error);
+    }
   };
 
   return (
