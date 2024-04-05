@@ -1,0 +1,93 @@
+.left {
+  width: 30rem;
+  height: 100vh;
+  outline: 1px solid #fff0aa;
+}
+
+.search {
+  margin: 30px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 25rem;
+  border: 1px solid #fff0aa;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.searchbox input[type="text"] {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding-left: 10px;
+  border: none;
+  outline: none;
+}
+
+.searchbox button {
+  background-color: white;
+  color: lightslategray;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.starred {
+  padding: 20px 30px 20px 30px;
+  outline: solid 0.15px #644a20;
+  font-weight: bold;
+}
+
+.food {
+  padding: 20px 30px 20px 30px;
+  background-color: rgb(255, 210, 0);
+  outline: solid 0.15px #644a20;
+  font-weight: bold;
+}
+
+.food-option {
+  padding: 30px;
+  background-color: #fff0aa;
+  outline: none;
+}
+
+.place {
+  padding: 20px 30px 20px 30px;
+  background-color: rgb(255, 210, 0);
+  outline: solid 0.15px #644a20;
+  font-weight: bold;
+}
+
+.place-option {
+  padding: 30px;
+  background-color: #fff0aa;
+  outline: none;
+}
+
+.price {
+  padding: 20px 30px 20px 30px;
+  background-color: rgb(255, 210, 0);
+  outline: solid 0.15px #644a20;
+  font-weight: bold;
+}
+
+.price-option {
+  padding: 30px;
+  background-color: #fff0aa;
+  outline: none;
+}
+
+.button2 {
+  background-color: white;
+  color: #fff0aa;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.btn-search {
+  border: 1px solid #644a20;
+  color: #644a20;
+  border-radius: 5px;
+  background-color: #fff0aa;
+}

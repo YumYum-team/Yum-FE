@@ -1,0 +1,71 @@
+.fi-box {
+  width: 450px;
+  height: 400px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff0aa;
+  text-align: center;
+}
+
+.fi-h1 {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 30px;
+  padding-top: 30px;
+  padding-right: 110px;
+  margin: -20px -20px -20px -20px;
+  font-size: 30px;
+  font-weight: 300;
+  background-color: white;
+}
+
+.leftArrow {
+  padding-right: 100px;
+}
+
+.h1 img {
+  width: auto;
+  height: auto;
+  cursor: pointer;
+}
+
+.fi-id {
+  width: 80%;
+  padding: 7px;
+  margin-top: 60px;
+  border: none;
+  margin-bottom: 5px;
+}
+
+.fi-email {
+  width: 68%;
+  padding: 7px;
+  margin-top: 8px;
+  border: none;
+  margin-bottom: 5px;
+}
+
+.fi-check {
+  padding: 7px;
+  margin-top: 8px;
+  margin-left: 7px;
+  border: none;
+  background-color: white;
+  color: #939393;
+  margin-bottom: 15px;
+}
+
+.fi-bt {
+  width: 80%;
+  padding: 7px;
+  margin-top: 15px;
+  border: none;
+  color: white;
+  font-weight: bolder;
+  background-color: #ffc700;
+}
+
+.fi-bt:disabled {
+  background-color: #939393;
+}
