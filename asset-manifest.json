@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/static/css/main.34a6d4d0.css",
+    "main.js": "/static/js/main.58678561.js",
+    "static/js/453.60bf60b9.chunk.js": "/static/js/453.60bf60b9.chunk.js",
+    "static/media/profile2.png": "/static/media/profile2.6c77ffbe6e8fe4c50c33.png",
+    "static/media/profile.png": "/static/media/profile.d5e5ded72986f9d2ed6f.png",
+    "static/media/bootstrap-icons.woff?": "/static/media/bootstrap-icons.39795c0b4513de014cf8.woff",
+    "static/media/bootstrap-icons.woff2?": "/static/media/bootstrap-icons.b7bcc075b395c14ce8c2.woff2",
+    "static/media/webLogo.png": "/static/media/webLogo.3f9880a1909a82bd3351.png",
+    "static/media/mainLogo.png": "/static/media/mainLogo.048b56ee76f53ae131af.png",
+    "static/media/marker.png": "/static/media/marker.1d2d68edf994768e07cb.png",
+    "static/media/Logo.png": "/static/media/Logo.325f657bcce8b11e001f.png",
+    "static/media/icon-map-marker-green.svg": "/static/media/icon-map-marker-green.43b8ecd6867c12b2d2a76a70cc2e747c.svg",
+    "static/media/icon-map-marker-red.svg": "/static/media/icon-map-marker-red.ddfc143e40cdc921fa1a2f67d31ee923.svg",
+    "index.html": "/index.html",
+    "static/media/icon-cancel-stroke-white.svg": "/static/media/icon-cancel-stroke-white.f5f2a7d5200d0e53a81fcdb6898d0131.svg",
+    "static/media/user_icon.svg": "/static/media/user_icon.ff28f18a432bf1338c5a5dc1c8a15614.svg",
+    "static/media/tabler_x.svg": "/static/media/tabler_x.03864873fa37f2d989bdf3187675686c.svg",
+    "main.34a6d4d0.css.map": "/static/css/main.34a6d4d0.css.map",
+    "main.58678561.js.map": "/static/js/main.58678561.js.map",
+    "453.60bf60b9.chunk.js.map": "/static/js/453.60bf60b9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.34a6d4d0.css",
+    "static/js/main.58678561.js"
+  ]
+}
